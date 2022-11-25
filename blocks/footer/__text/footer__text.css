@@ -1,0 +1,19 @@
+.footer__text {
+  color: #545454;
+  font-size: 18px;
+  line-height: 21.78px;
+  font-weight: 400;
+}
+
+
+@media screen and (max-width:1024px) {
+  .footer__text {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 800px) {
+ .footer__text {
+  font-size: 1rem;
+ }
+}

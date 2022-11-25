@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./pages/index.css">
+    <title>Mesto</title>
+</head>
+<body class="root">
+  <div class="page">
+    <header class="header">
+        <img src="./images/logo/logo.svg" alt="Место" class="header__logo">
+    </header>
+
+    <main>
+      <section class="profile">
+          <img src="./images/Avatar.jpg" alt="Жак" class="profile__image">
+          <div class="profile__info">
+            <div class="profile__container">
+              <h1 class="profile__name">Жак-Ив Кусто</h1>
+              <button class="profile__button">
+                <img src="./images/logo/pen.svg" alt="редактирование" class="profile__button-image">
+              </button>
+            </div>
+            <p class="profile__text">Исследователь океана</p>
+          </div>
+          <button class="profile__add-button">
+            <img src="./images/logo/plus.svg" alt="плюс">
+          </button>
+      </section>
+
+      <!-- <section class="cards">
+          <div class="card">
+            <img src="./images/kara.jpg" class="card__image" alt="Карачевск">
+            <div class="card__heading-plus-heard">
+              <h2 class="card__heading">Карачаевск</h2>
+              <img src="./images/logo/heard.svg" alt="heard" class="card__heard">
+            </div>
+          </div>
+          <div class="card">
+            <img src="./images/gora.jpg" class="card__image" alt="Гора Эльбрус">
+            <div class="card__heading-plus-heard">
+              <h2 class="card__heading">Гора Эльбрус</h2>
+              <img src="./images/logo/heard.svg" alt="heard" class="card__heard">
+            </div>
+          </div>
+          <div class="card">
+            <img src="./images/dovbai.jpg" class="card__image" alt="Домбай">
+            <div class="card__heading-plus-heard">
+              <h2 class="card__heading">Домбай</h2>
+              <img src="./images/logo/heard.svg" alt="heard" class="card__heard">
+            </div>
+          </div>
+          <div class="card">
+            <img src="./images/gora.jpg" class="card__image" alt="Гора Эльбрус">
+            <div class="card__heading-plus-heard">
+              <h2 class="card__heading">Гора Эльбрус</h2>
+              <img src="./images/logo/heard.svg" alt="heard" class="card__heard">
+            </div>
+          </div>
+          <div class="card">
+              <img src="./images/dovbai.jpg" class="card__image" alt="Домбай">
+            <div class="card__heading-plus-heard">
+              <h2 class="card__heading">Домбай</h2>
+              <img src="./images/logo/heard.svg" alt="heard" class="card__heard">
+            </div>
+          </div>
+          <div class="card">
+            <img src="./images/kara.jpg" class="card__image" alt="Карачаево-Ч...">
+            <div class="card__heading-plus-heard">
+              <h2 class="card__heading">Карачаево-Ч...</h2>
+              <img src="./images/logo/heard.svg" alt="heard" class="card__heard">
+            </div>
+          </div>
+      </section> -->
+
+      <section class="popup">
+          <div class="popup__container">
+            <form action="">
+              <button class="popup__close-button">
+                  <img src="./images/logo/Close Icon.svg" alt="">
+                </button>
+              <div class="popup__main-container">
+                <h2 class="popup__heading">Редактировать профиль</h2>
+                <input class="popup__input" type="text" value="Жак-ив Кусто">
+                <input class="popup__input" type="text" value="Исследователь окена">
+                <button class="popup__button">Сохранить</button>
+              </div>
+            </form>
+          </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <h2 class="footer__text">&copy; 2020 Mesto Russia</h2>
+    </footer>
+  </div>
+</body>
+</html>
