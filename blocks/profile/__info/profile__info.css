@@ -5,6 +5,19 @@
   margin: auto 0 auto 30px;
 }
 
+@media screen and (max-width: 930px) {
+  .profile__info{
+    margin-left: 15px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .profile__info{
+    margin-left: 0;
+    margin-bottom: 20px;
+  }
+}
+
 @media screen and (max-width: 320px) {
   .profile__info {
     width: 100%;

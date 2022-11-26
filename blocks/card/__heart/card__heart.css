@@ -1,0 +1,15 @@
+.card__heart {
+  margin: auto 20px;
+  padding: 0;
+  width: 22px;
+  height: 19px;
+  background: 0;
+  border: 0;
+  transition: opacity .3s linear;
+}
+
+.card__heart:hover {
+  opacity: .7;
+  cursor: pointer;
+}
+
