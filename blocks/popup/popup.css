@@ -1,9 +1,10 @@
 .popup {
   display: none;
   position: absolute;
+  justify-content: center;
   top: 0;
   left: 0;
-  width: 99.5vw;
+  width: 99vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
 }
