@@ -1,5 +1,5 @@
 .profile__text{
-  max-width: 90%;
+  max-width: 350px;
   margin: 0;
   color: #fff;
   font-size: 18px;
@@ -10,23 +10,34 @@
   text-overflow: ellipsis;
 }
 
-@media screen and (max-width: 930px) {
+@media screen and (max-width: 1020px) {
   .profile__text {
-    font-size: 16px;
-    line-height: 16px;
+    font-size: 15px;
+    line-height: 15px;
+    max-width: 300px;
+  }
+}
+
+@media screen and (max-width: 933px) {
+  .profile__text {
+    font-size: 13px;
+    line-height: 13px;
+    max-width: 275px;
   }
 }
 
 @media screen and (max-width: 800px) {
   .profile__text {
+    font-size: 16px;
     text-align: center;
     margin: 0 auto;
   }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 400px) {
   .profile__text {
     font-size: 14px;
-    line-height: 16.94px;
+    max-width: 200px;
   }
 }
+
