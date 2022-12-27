@@ -5,6 +5,7 @@
   height: 19px;
   background: 0;
   border: 0;
+  background-image: url(../../../images/logo/heart.svg);
   transition: opacity .3s linear;
 }
 
