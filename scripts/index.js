@@ -1,10 +1,10 @@
 // Для открытия и закрытия попапа
-const profileButton = document.querySelector('.profile__button') // для открытия кнопки редактирования
-const addCardButton = document.querySelector('.profile__add-button') // для открытия попапа добавления карточек
+const buttonOpenPopupProfile = document.querySelector('.profile__button') // для открытия кнопки редактирования
+const buttonOpenPopupCard = document.querySelector('.profile__add-button') // для открытия попапа добавления карточек
 const popupProfile = document.querySelector('.popup-profile')
 const popupCards = document.querySelector('.popup-cards')
-const closeButtonProfile = popupProfile.querySelector('.popup__close-image')
-const closeButtonCards = popupCards.querySelector('.popup__close-image')
+const buttonClosePopupProfile = popupProfile.querySelector('.popup__close-image')
+const buttonClosePopupCards = popupCards.querySelector('.popup__close-image')
 // Редактирование имени и информации о себе
 const formElementProfile = popupProfile.querySelector('.popup__form')
 const nameInput = formElementProfile.querySelector('.name_input')
@@ -17,13 +17,14 @@ const placeInput = formElementCards.querySelector('.name_place')
 const linkInput = formElementCards.querySelector('.name_link')
 const sectionCards = document.querySelector('.cards')
 const cardTemplate = document.querySelector('#card').content
-// Лайк карточки
+
 // увеличение карточки
 const popupImage = document.querySelector('.popup-image')
-const imagePopup = document.querySelector('.popup-image__image')
+const imagePopup = popupImage.querySelector('.popup-image__image')
 const closeButtonImage = popupImage.querySelector('.popup__close-image')
 const popupTitle = popupImage.querySelector('.popup-image__title')
 
+// Функции
 function openedPopup(popup) {
   popup.classList.add('popup_opened')
 }
@@ -32,22 +33,7 @@ function closedPopup(popup) {
   popup.classList.remove('popup_opened')
 }
 
-profileButton.addEventListener('click', () => {
-  openedPopup(popupProfile)
-})
-
-addCardButton.addEventListener('click', () => {
-  openedPopup(popupCards)
-})
-
-closeButtonProfile.addEventListener('click', () => {
-  closedPopup(popupProfile)
-})
-
-closeButtonCards.addEventListener('click', () => {
-  closedPopup(popupCards)
-})
-
+// Функция отправления формы профиля
 function handleFormSubmitProfile(evt) {
   evt.preventDefault()
 
@@ -56,65 +42,101 @@ function handleFormSubmitProfile(evt) {
 
   closedPopup(popupProfile)
 }
-formElementProfile.addEventListener('submit', handleFormSubmitProfile)
 
+// Функция создания карточки
+function createCards(name, link) {
+  const cardAdd = cardTemplate.querySelector('.card').cloneNode(true)
+
+  cardAdd.querySelector('.card__heading').textContent = name
+  cardAdd.querySelector('.card__image').src = link
+  cardAdd.querySelector('.card__image').alt = name
+  let heartCard = cardAdd.querySelector('.card__heart')
+  heartCard.addEventListener('click', () => heartCard.classList.toggle('card__heart_active'))
+
+  sectionCards.prepend(cardAdd)  
+
+  let trashCard = cardAdd.querySelector('.card__trash')
+  trashCard.addEventListener('click', () => cardAdd.remove())
+
+  let imageCard = cardAdd.querySelector('.card__image')
+    imageCard.addEventListener('click', () => {
+      
+      popupTitle.textContent = cardAdd.querySelector('.card__heading').textContent
+      imagePopup.src = cardAdd.querySelector('.card__image').src  
+      imagePopup.alt = popupTitle.textContent
+      openedPopup(popupImage)
+    }
+  )
+
+  return cardAdd
+}
+
+// Функция отправления формы карточки
 function handleFormSubmitCards(evt) {
   evt.preventDefault() 
-
-  initialCards.unshift({name: placeInput.value, link: linkInput.value})
-
-  const cardAdd = cardTemplate.querySelector('.card').cloneNode(true)
   
-  cardAdd.querySelector('.card__image').src = initialCards[0].link
-  cardAdd.querySelector('.card__heading').textContent = initialCards[0].name
-  sectionCards.prepend(cardAdd)  
-  
-  placeInput.value = ''
-  linkInput.value = ''
+  let linkCard = linkInput.value
+  let placeCard = placeInput.value
+
+  createCards(placeCard, linkCard)  
 
   closedPopup(popupCards)
+
+  placeInput.value = ''
+  linkInput.value = ''
 }
-formElementCards.addEventListener('submit', handleFormSubmitCards)
 
-
+// Функция добавления карточек из файла 
 function addCrads() { 
   initialCards.forEach(element => {
     const cardElement = cardTemplate.querySelector('.card').cloneNode(true)
     cardElement.querySelector('.card__heading').textContent = element.name
     cardElement.querySelector('.card__image').src = element.link
+    cardElement.querySelector('.card__image').alt = element.name
     sectionCards.append(cardElement)
+
+    const buttonLike = cardElement.querySelector('.card__heart')
+    buttonLike.addEventListener('click', () => buttonLike.classList.toggle('card__heart_active'))
+
+    let trashCard = cardElement.querySelector('.card__trash')
+    trashCard.addEventListener('click', () => cardElement.remove())
+
+    let imageCard = cardElement.querySelector('.card__image')
+    imageCard.addEventListener('click', () => {
+      
+      popupTitle.textContent = cardElement.querySelector('.card__heading').textContent
+      imagePopup.src = cardElement.querySelector('.card__image').src  
+      imagePopup.alt = popupTitle.textContent
+      openedPopup(popupImage)
+      }
+    )
   })
 }
 addCrads()
 
-sectionCards.addEventListener('click', (event) => {
-
-  if (event.target.classList[0] === 'card__heart') {
-    event.target.classList.toggle('card__heart_active')
-  }
+// слушатели
+buttonOpenPopupProfile.addEventListener('click', () => {
+  openedPopup(popupProfile)
 })
 
-sectionCards.addEventListener('click', (event) => {
-
-  if (event.target.classList[0] === 'card__trash') {
-    const deleteCard = event.target.closest('.card')
-    deleteCard.remove()
-  }
+buttonOpenPopupCard.addEventListener('click', () => {
+  openedPopup(popupCards)
 })
 
-// увеличение картинки
+buttonClosePopupProfile.addEventListener('click', () => {
+  closedPopup(popupProfile)
+})
 
-sectionCards.addEventListener('click', elm => {
-  if (elm.target.classList[0] === 'card__image') {
-    const containerPopup = elm.target.nextElementSibling
-    const newTitle = containerPopup.querySelector('.card__heading').textContent
-    popupTitle.textContent = newTitle
-    const newImage = elm.target.src
-    imagePopup.src = newImage
-    openedPopup(popupImage)
-  }
+buttonClosePopupCards.addEventListener('click', () => {
+  closedPopup(popupCards)
 })
 
 closeButtonImage.addEventListener('click', () => {
   closedPopup(popupImage)
 })
+
+formElementCards.addEventListener('submit', handleFormSubmitCards)
+formElementProfile.addEventListener('submit', handleFormSubmitProfile)
+
+
+
