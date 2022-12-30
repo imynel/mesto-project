@@ -21,7 +21,7 @@ const cardTemplate = document.querySelector('#card').content
 // увеличение карточки
 const popupImage = document.querySelector('.popup-image')
 const imagePopup = popupImage.querySelector('.popup-image__image')
-const closeButtonImage = popupImage.querySelector('.popup__close-image')
+const buttonClosePopupImage = popupImage.querySelector('.popup__close-image')
 const popupTitle = popupImage.querySelector('.popup-image__title')
 
 // Функции
@@ -50,15 +50,15 @@ function createCards(name, link) {
   cardAdd.querySelector('.card__heading').textContent = name
   cardAdd.querySelector('.card__image').src = link
   cardAdd.querySelector('.card__image').alt = name
-  let heartCard = cardAdd.querySelector('.card__heart')
+  const heartCard = cardAdd.querySelector('.card__heart')
   heartCard.addEventListener('click', () => heartCard.classList.toggle('card__heart_active'))
 
   sectionCards.prepend(cardAdd)  
 
-  let trashCard = cardAdd.querySelector('.card__trash')
+  const trashCard = cardAdd.querySelector('.card__trash')
   trashCard.addEventListener('click', () => cardAdd.remove())
 
-  let imageCard = cardAdd.querySelector('.card__image')
+  const imageCard = cardAdd.querySelector('.card__image')
     imageCard.addEventListener('click', () => {
       
       popupTitle.textContent = cardAdd.querySelector('.card__heading').textContent
@@ -67,7 +67,7 @@ function createCards(name, link) {
       openedPopup(popupImage)
     }
   )
-
+    
   return cardAdd
 }
 
@@ -75,8 +75,8 @@ function createCards(name, link) {
 function handleFormSubmitCards(evt) {
   evt.preventDefault() 
   
-  let linkCard = linkInput.value
-  let placeCard = placeInput.value
+  const linkCard = linkInput.value
+  const placeCard = placeInput.value
 
   createCards(placeCard, linkCard)  
 
@@ -88,29 +88,7 @@ function handleFormSubmitCards(evt) {
 
 // Функция добавления карточек из файла 
 function addCrads() { 
-  initialCards.forEach(element => {
-    const cardElement = cardTemplate.querySelector('.card').cloneNode(true)
-    cardElement.querySelector('.card__heading').textContent = element.name
-    cardElement.querySelector('.card__image').src = element.link
-    cardElement.querySelector('.card__image').alt = element.name
-    sectionCards.append(cardElement)
-
-    const buttonLike = cardElement.querySelector('.card__heart')
-    buttonLike.addEventListener('click', () => buttonLike.classList.toggle('card__heart_active'))
-
-    let trashCard = cardElement.querySelector('.card__trash')
-    trashCard.addEventListener('click', () => cardElement.remove())
-
-    let imageCard = cardElement.querySelector('.card__image')
-    imageCard.addEventListener('click', () => {
-      
-      popupTitle.textContent = cardElement.querySelector('.card__heading').textContent
-      imagePopup.src = cardElement.querySelector('.card__image').src  
-      imagePopup.alt = popupTitle.textContent
-      openedPopup(popupImage)
-      }
-    )
-  })
+  initialCards.forEach(element => createCards(element.name, element.link))
 }
 addCrads()
 
@@ -131,7 +109,7 @@ buttonClosePopupCards.addEventListener('click', () => {
   closedPopup(popupCards)
 })
 
-closeButtonImage.addEventListener('click', () => {
+buttonClosePopupImage.addEventListener('click', () => {
   closedPopup(popupImage)
 })
 
