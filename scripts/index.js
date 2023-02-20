@@ -71,6 +71,16 @@ function createCards(name, link) {
   return cardAdd
 }
 
+document.addEventListener('keydown', keyDownEsc)
+
+function keyDownEsc(evt) {
+  if (evt.key === "Escape") {
+    closedPopup(popupImage)
+    closedPopup(popupCards)
+    closedPopup(popupProfile)
+  }
+}
+
 // Функция отправления формы карточки
 function handleFormSubmitCards(evt) {
   evt.preventDefault() 
