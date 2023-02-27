@@ -1,3 +1,5 @@
+import { createCards } from './createCard.js'
+
 // Для открытия и закрытия попапа
 const buttonOpenPopupProfile = document.querySelector('.profile__button') // для открытия кнопки редактирования
 const buttonOpenPopupCard = document.querySelector('.profile__add-button') // для открытия попапа добавления карточек
@@ -15,8 +17,7 @@ const jobProfile = document.querySelector('.profile__text')
 // Добавление карточки 
 const placeInput = formElementCards.querySelector('.name_place')
 const linkInput = formElementCards.querySelector('.name_link')
-const sectionCards = document.querySelector('.cards')
-const cardTemplate = document.querySelector('#card').content
+
 
 // увеличение карточки
 const popupImage = document.querySelector('.popup-image')
@@ -43,33 +44,7 @@ function handleFormSubmitProfile(evt) {
   closedPopup(popupProfile)
 }
 
-// Функция создания карточки
-function createCards(name, link) {
-  const cardAdd = cardTemplate.querySelector('.card').cloneNode(true)
 
-  cardAdd.querySelector('.card__heading').textContent = name
-  cardAdd.querySelector('.card__image').src = link
-  cardAdd.querySelector('.card__image').alt = name
-  const heartCard = cardAdd.querySelector('.card__heart')
-  heartCard.addEventListener('click', () => heartCard.classList.toggle('card__heart_active'))
-
-  sectionCards.prepend(cardAdd)  
-
-  const trashCard = cardAdd.querySelector('.card__trash')
-  trashCard.addEventListener('click', () => cardAdd.remove())
-
-  const imageCard = cardAdd.querySelector('.card__image')
-    imageCard.addEventListener('click', () => {
-      
-      popupTitle.textContent = cardAdd.querySelector('.card__heading').textContent
-      imagePopup.src = cardAdd.querySelector('.card__image').src  
-      imagePopup.alt = popupTitle.textContent
-      openedPopup(popupImage)
-    }
-  )
-    
-  return cardAdd
-}
 
 document.addEventListener('keydown', keyDownEsc)
 
@@ -96,11 +71,7 @@ function handleFormSubmitCards(evt) {
   linkInput.value = ''
 }
 
-// Функция добавления карточек из файла 
-function addCrads() { 
-  initialCards.forEach(element => createCards(element.name, element.link))
-}
-addCrads()
+
 
 // слушатели
 buttonOpenPopupProfile.addEventListener('click', () => {

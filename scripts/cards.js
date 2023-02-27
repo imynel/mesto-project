@@ -1,3 +1,5 @@
+import { createCards } from "./createCard.js";
+
 const initialCards = [
     {
       name: 'Архыз',
@@ -25,3 +27,8 @@ const initialCards = [
     }
   ];
   
+// Функция добавления карточек из файла 
+function addCrads() { 
+  initialCards.forEach(element => createCards(element.name, element.link))
+}
+addCrads()
