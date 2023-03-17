@@ -1,4 +1,4 @@
-import { validate } from 'schema-utils';
+
 import './pages/index.css';
 
 
@@ -57,7 +57,13 @@ function handleFormSubmitProfile(evt) {
   closedPopup(popupProfile)
 }
 
-
+document.addEventListener('click', (elm) => {
+  if (elm.target.classList.value.includes('popup_opened')) {
+    closedPopup(popupImage)
+    closedPopup(popupCards)
+    closedPopup(popupProfile)
+  }
+})
 
 document.addEventListener('keydown', keyDownEsc)
 
@@ -149,31 +155,87 @@ function createCards(name, link) {
 }
 
 //валидация форм
-const formProfile = document.querySelector('#form-profile')
-const formInput = formProfile.querySelector('.name_input')
-const inputError = formProfile.querySelector(`.${formInput.id}-error`)
 
-function showInputError(element, errorMessage) {
-  element.classList.add('form__input_type-error')
-  inputError.textContent = errorMessage
-  inputError.classList.add('form__input-error_active')
+function hasInvalidInput(inputList) {
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid
+  })
 }
 
-function hideInputError(element) {
-  element.classList.remove('form__input_type-error')
-  inputError.classList.remove('form__input-error_active')
-  inputError.textContent = '';
-}
-
-const isValid = () => {
-  if(!formInput.validity.valid) {
-    showInputError(formInput, formInput.validationMessage)
+function toggleButtonState(inputList, buttonElement) {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.disabled = true
+    buttonElement.classList.add('form__submit_inactive')
   } else {
-    hideInputError(formInput)
+    buttonElement.disabled = false
+    buttonElement.classList.remove('form__submit_inactive')
+    
+  } 
+}
+
+const showInputError = (formElement, inputElement, errorMessage) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.add('form__input_type-error')
+  errorElement.textContent = errorMessage
+  errorElement.classList.add('form__input-error_active')
+}
+
+const hideInputError = (formElement, inputElement) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.remove('form__input_type-error')
+  errorElement.classList.remove('form__input-error_active')
+  errorElement.textContent = '';
+}
+
+const isValid = (formElement, inputElement) => {
+  if (inputElement.validity.patternMismatch) {
+    // встроенный метод setCustomValidity принимает на вход строку
+    // и заменяет ею стандартное сообщение об ошибке
+    inputElement.setCustomValidity("Разрешены только латинские буквы.");
+  } else {
+    // если передать пустую строку, то будут доступны
+    // стандартные браузерные сообщения
+    inputElement.setCustomValidity("");
+  }
+
+  if(!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage)
+  } else {
+    hideInputError(formElement, inputElement)
   }
 }
+const setEventListener = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll('.form-input'))
+  const buttonElement = formElement.querySelector('.form__submit');
 
-formInput.addEventListener('input', isValid)
+  toggleButtonState(inputList, buttonElement)
+  
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener('input', () => {
+      isValid(formElement, inputElement)
+      toggleButtonState(inputList, buttonElement)
+    })
+  })
+}
+
+const enableValidation = () => {
+  const formList = Array.from(document.querySelectorAll('.form'))
+
+  formList.forEach((formElement) => {
+    formElement.addEventListener('submit', (evt) => {
+      evt.preventDefault()
+    })
+    
+
+    setEventListener(formElement)
+  })
+}
+
+enableValidation()
+
+
+
+
 
 // слушатели
 buttonOpenPopupProfile.addEventListener('click', () => {
