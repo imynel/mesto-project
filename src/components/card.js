@@ -3,42 +3,41 @@ import {
     popupTitle,
     popupImage,
     imagePopup,
-    initialCards,
+    sectionCards,
 } from './consts.js'
 
 
-  
-  // Функция добавления карточек из файла 
-  function addCards() { 
-  initialCards.forEach(element => createCards(element.name, element.link))
-  }
-  addCards()
 
-  export default function createCards(name, link) {
-    const sectionCards = document.querySelector('.cards')
+  export default function createCard(name, link) {
+    
     const cardTemplate = document.querySelector('#card').content
     const cardAdd = cardTemplate.querySelector('.card').cloneNode(true)
     
   
     cardAdd.querySelector('.card__heading').textContent = name
-    cardAdd.querySelector('.card__image').src = link
-    cardAdd.querySelector('.card__image').alt = name
+    const cardInfo = cardAdd.querySelector('.card__image')
+    cardInfo.src = link
+    cardInfo.alt = name
+    
     const heartCard = cardAdd.querySelector('.card__heart')
     heartCard.addEventListener('click', () => heartCard.classList.toggle('card__heart_active'))
-  
-    sectionCards.prepend(cardAdd)  
   
     const trashCard = cardAdd.querySelector('.card__trash')
     trashCard.addEventListener('click', () => cardAdd.remove())
   
-    const imageCard = cardAdd.querySelector('.card__image')
+    const imageCard = cardInfo
       imageCard.addEventListener('click', () => {
         popupTitle.textContent = cardAdd.querySelector('.card__heading').textContent
-        imagePopup.src = cardAdd.querySelector('.card__image').src  
+        imagePopup.src = cardInfo.src  
         imagePopup.alt = popupTitle.textContent
         openedPopup(popupImage)
       }
     )
       
-    return cardAdd
+    return renderCard(cardAdd, sectionCards)
   }
+
+  function renderCard(card, container) {
+    container.prepend(card)
+  }
+  

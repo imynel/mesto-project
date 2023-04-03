@@ -9,6 +9,7 @@ import {
     linkInput,
     popupCards,
     popupProfile,
+    buttonCard,
 } from './consts.js'
 
 function handleFormSubmitProfile(evt) {
@@ -32,6 +33,8 @@ function handleFormSubmitCards(evt) {
   
     placeInput.value = ''
     linkInput.value = ''
+    buttonCard.disabled = true
+    buttonCard.classList.add('form__submit_inactive')
   }
 
 export {handleFormSubmitProfile, handleFormSubmitCards}

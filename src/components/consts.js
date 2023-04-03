@@ -9,7 +9,7 @@ const nameInput = formElementProfile.querySelector('.name_input')
 const jobInput = formElementProfile.querySelector('.job_input')
 const placeInput = formElementCards.querySelector('.name_place')
 const popupImage = document.querySelector('.popup-image')
-
+const buttonCard = popupCards.querySelector('.popup__button')
 const buttonClosePopupImage = popupImage.querySelector('.popup__close-image')
 const imagePopup = popupImage.querySelector('.popup-image__image')
 const popupTitle = popupImage.querySelector('.popup-image__title')
@@ -19,7 +19,7 @@ const buttonOpenPopupProfile = document.querySelector('.profile__button') // д�
 const buttonOpenPopupCard = document.querySelector('.profile__add-button') // для открытия попапа добавления карточек
 const buttonClosePopupProfile = popupProfile.querySelector('.popup__close-image')
 const buttonClosePopupCards = popupCards.querySelector('.popup__close-image')
-
+const sectionCards = document.querySelector('.cards')
 
 const initialCards = [
     {
@@ -68,4 +68,6 @@ export {
     buttonOpenPopupProfile,
     buttonClosePopupCards,
     buttonClosePopupProfile,
+    sectionCards,
+    buttonCard,
 }

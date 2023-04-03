@@ -13,7 +13,14 @@ import {
   popupImage,
   popupCards,
   popupProfile,
+  initialCards,
 } from './consts.js'
+import createCard from './card.js'
+
+function addCards() { 
+  initialCards.forEach(element => createCard(element.name, element.link))
+}
+addCards()
 
 enableValidation()
 
