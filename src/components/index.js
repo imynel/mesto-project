@@ -1,5 +1,5 @@
 import '../pages/index.css';
-import {openedPopup, closedPopup, keyDownEsc} from './modal.js'
+import {openedPopup, closedPopup, closeByEsc, closePopups} from './modal.js'
 import {enableValidation} from './valid.js'
 import {handleFormSubmitProfile, handleFormSubmitCards} from './utils.js'
 import {
@@ -22,15 +22,24 @@ function addCards() {
 }
 addCards()
 
-enableValidation()
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+}); 
 
-document.addEventListener('click', (elm) => {
+function handleDocumentClick(elm) {
   if (elm.target.classList.value.includes('popup_opened')) {
-    closedPopup(popupImage)
-    closedPopup(popupCards)
-    closedPopup(popupProfile)
+    closePopups()
   }
-})
+}
+
+
+document.addEventListener('click', handleDocumentClick)
+
 
 // слушатели
 buttonOpenPopupProfile.addEventListener('click', () => {
@@ -54,8 +63,13 @@ buttonClosePopupImage.addEventListener('click', () => {
   closedPopup(popupImage)
 })
 
-document.addEventListener('keydown', keyDownEsc)
+document.addEventListener('keydown', function(evt) {
+  closeByEsc(evt, document.querySelector('.popup-image'));
+  closeByEsc(evt, document.querySelector('.popup-cards'));
+  closeByEsc(evt, document.querySelector('.popup-profile'));
+});
 
 formElementCards.addEventListener('submit', handleFormSubmitCards)
 formElementProfile.addEventListener('submit', handleFormSubmitProfile)
 
+export { handleDocumentClick }

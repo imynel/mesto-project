@@ -1,4 +1,4 @@
-//валидация форм
+
 
 function hasInvalidInput(inputList) {
     return inputList.some((inputElement) => {
@@ -20,7 +20,7 @@ function hasInvalidInput(inputList) {
   
   const showInputError = (formElement, inputElement, errorMessage) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-    inputElement.classList.add('form__input_type-error')
+    inputElement.classList.add(enableValidation.inputErrorClass)
     errorElement.textContent = errorMessage
     errorElement.classList.add('form__input-error_active')
   }
@@ -36,7 +36,7 @@ function hasInvalidInput(inputList) {
     if (inputElement.validity.patternMismatch) {
       // встроенный метод setCustomValidity принимает на вход строку
       // и заменяет ею стандартное сообщение об ошибке
-      inputElement.setCustomValidity("Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы");
+      inputElement.setCustomValidity(inputElement.dataset.errorMessage);
     } else {
       // если передать пустую строку, то будут доступны
       // стандартные браузерные сообщения

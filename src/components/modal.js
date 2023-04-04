@@ -3,25 +3,32 @@ import {
     popupCards,
     popupProfile
 } from './consts.js'
-
+import {handleDocumentClick} from './index.js'
 function openedPopup(popup) {
-    popup.classList.add('popup_opened')
+  popup.classList.add('popup_opened')
 }
   
+function closePopups() {
+  closedPopup(popupImage);
+  closedPopup(popupCards);
+  closedPopup(popupProfile);
+  document.removeEventListener('click', handleDocumentClick);
+}
 function closedPopup(popup) {
     popup.classList.remove('popup_opened')
+    document.addEventListener('click', handleDocumentClick)
 }
 
-function keyDownEsc(evt) {
+function closeByEsc(evt, popup) {
   if (evt.key === "Escape") {
-    closedPopup(popupImage)
-    closedPopup(popupCards)
-    closedPopup(popupProfile)
+    closedPopup(popup)
+    evt.target.removeEventListener('keydown', closeByEsc)
   }
 }
 
 export {
     openedPopup, 
     closedPopup, 
-    keyDownEsc
+    closeByEsc,
+    closePopups,
 }
