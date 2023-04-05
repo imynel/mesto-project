@@ -1,5 +1,5 @@
 import '../pages/index.css';
-import {openedPopup, closedPopup, closeByEsc, closePopups} from './modal.js'
+import {openPopup, closePopup, closeByEsc, closeByOverlayClick} from './modal.js'
 import {enableValidation} from './valid.js'
 import {handleFormSubmitProfile, handleFormSubmitCards} from './utils.js'
 import {
@@ -14,62 +14,54 @@ import {
   popupCards,
   popupProfile,
   initialCards,
+  sectionCards,
 } from './consts.js'
-import createCard from './card.js'
+import { createCard, renderCard } from './card.js'
 
 function addCards() { 
-  initialCards.forEach(element => createCard(element.name, element.link))
+  initialCards.forEach(element => {
+    const card = createCard(element.name, element.link)
+    renderCard(card, sectionCards)
+  })
 }
 addCards()
 
 enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
+  formSelector: '.form',
+  inputSelector: '.form-input',
+  submitButtonSelector: '.form__submit',
+  inactiveButtonClass: 'form__submit_inactive',
+  inputErrorClass: 'form__input_type-error',
+  errorClass: 'form__input-error_active',
 }); 
 
-function handleDocumentClick(elm) {
-  if (elm.target.classList.value.includes('popup_opened')) {
-    closePopups()
-  }
-}
 
 
-document.addEventListener('click', handleDocumentClick)
+
+
 
 
 // слушатели
 buttonOpenPopupProfile.addEventListener('click', () => {
-  openedPopup(popupProfile)
+  openPopup(popupProfile)
 })
 
 buttonOpenPopupCard.addEventListener('click', () => {
-  openedPopup(popupCards)
-  
+  openPopup(popupCards)
 })
 
 buttonClosePopupProfile.addEventListener('click', () => {
-  closedPopup(popupProfile)
+  closePopup(popupProfile)
 })
 
 buttonClosePopupCards.addEventListener('click', () => {
-  closedPopup(popupCards)
+  closePopup(popupCards)
 })
 
 buttonClosePopupImage.addEventListener('click', () => {
-  closedPopup(popupImage)
+  closePopup(popupImage)
 })
-
-document.addEventListener('keydown', function(evt) {
-  closeByEsc(evt, document.querySelector('.popup-image'));
-  closeByEsc(evt, document.querySelector('.popup-cards'));
-  closeByEsc(evt, document.querySelector('.popup-profile'));
-});
 
 formElementCards.addEventListener('submit', handleFormSubmitCards)
 formElementProfile.addEventListener('submit', handleFormSubmitProfile)
 
-export { handleDocumentClick }

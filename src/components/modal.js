@@ -1,34 +1,35 @@
-import {
-    popupImage,
-    popupCards,
-    popupProfile
-} from './consts.js'
-import {handleDocumentClick} from './index.js'
-function openedPopup(popup) {
+
+function openPopup(popup) {
   popup.classList.add('popup_opened')
+  document.addEventListener('keydown', closeByEsc)
+  document.addEventListener('mousedown', closeByOverlayClick)
+
 }
   
-function closePopups() {
-  closedPopup(popupImage);
-  closedPopup(popupCards);
-  closedPopup(popupProfile);
-  document.removeEventListener('click', handleDocumentClick);
-}
-function closedPopup(popup) {
+
+function closePopup(popup) {
     popup.classList.remove('popup_opened')
-    document.addEventListener('click', handleDocumentClick)
+    document.removeEventListener('keydown', closeByEsc)
+    document.removeEventListener('mousedown', closeByOverlayClick)
 }
 
-function closeByEsc(evt, popup) {
-  if (evt.key === "Escape") {
-    closedPopup(popup)
-    evt.target.removeEventListener('keydown', closeByEsc)
+function closeByEsc(evt) {
+  if (evt.key === "Escape") { 
+      const openedPopup = document.querySelector(".popup_opened")
+      closePopup(openedPopup) 
+  } 
+} 
+
+function closeByOverlayClick(evt) {
+  if (evt.target.classList.contains('popup_opened')) {
+    const openedPopup = document.querySelector(".popup_opened")
+    closePopup(openedPopup)
   }
 }
 
 export {
-    openedPopup, 
-    closedPopup, 
+    openPopup, 
+    closePopup, 
     closeByEsc,
-    closePopups,
+    closeByOverlayClick,
 }

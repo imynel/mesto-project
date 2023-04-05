@@ -6,33 +6,34 @@ function hasInvalidInput(inputList) {
     })
   }
   
-  
-  function toggleButtonState(inputList, buttonElement) {
+
+  function toggleButtonState(inputList, buttonElement, config) {
     if (hasInvalidInput(inputList)) {
       buttonElement.disabled = true
-      buttonElement.classList.add('form__submit_inactive')
+      buttonElement.classList.add(config.inactiveButtonClass)
+      
     } else {
       buttonElement.disabled = false
-      buttonElement.classList.remove('form__submit_inactive')
+      buttonElement.classList.remove(config.inactiveButtonClass)
       
     } 
   }
   
-  const showInputError = (formElement, inputElement, errorMessage) => {
+  const showInputError = (formElement, inputElement, errorMessage, config) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-    inputElement.classList.add(enableValidation.inputErrorClass)
+    inputElement.classList.add(config.inputErrorClass)
     errorElement.textContent = errorMessage
     errorElement.classList.add('form__input-error_active')
   }
   
-  const hideInputError = (formElement, inputElement) => {
+  const hideInputError = (formElement, inputElement, config) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-    inputElement.classList.remove('form__input_type-error')
-    errorElement.classList.remove('form__input-error_active')
+    inputElement.classList.remove(config.inputErrorClass)
+    errorElement.classList.remove(config.errorClass)
     errorElement.textContent = '';
   }
   
-  const isValid = (formElement, inputElement) => {
+  const isValid = (formElement, inputElement, config) => {
     if (inputElement.validity.patternMismatch) {
       // встроенный метод setCustomValidity принимает на вход строку
       // и заменяет ею стандартное сообщение об ошибке
@@ -44,27 +45,27 @@ function hasInvalidInput(inputList) {
     }
   
     if(!inputElement.validity.valid) {
-      showInputError(formElement, inputElement, inputElement.validationMessage)
+      showInputError(formElement, inputElement, inputElement.validationMessage, config)
     } else {
-      hideInputError(formElement, inputElement)
+      hideInputError(formElement, inputElement, config)
     }
   }
-  const setEventListener = (formElement) => {
-    const inputList = Array.from(formElement.querySelectorAll('.form-input'))
-    const buttonElement = formElement.querySelector('.form__submit');
+  const setEventListener = (formElement, config) => {
+    const inputList = Array.from(formElement.querySelectorAll(config.inputSelector))
+    const buttonElement = formElement.querySelector(config.submitButtonSelector);
   
-    toggleButtonState(inputList, buttonElement)
+    toggleButtonState(inputList, buttonElement, config)
     
     inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
-        isValid(formElement, inputElement)
-        toggleButtonState(inputList, buttonElement)
+        isValid(formElement, inputElement, config)
+        toggleButtonState(inputList, buttonElement, config)
       })
     })
   }
   
-  const enableValidation = () => {
-    const formList = Array.from(document.querySelectorAll('.form'))
+  const enableValidation = (config) => {
+    const formList = Array.from(document.querySelectorAll(config.formSelector))
   
     formList.forEach((formElement) => {
       formElement.addEventListener('submit', (evt) => {
@@ -72,7 +73,7 @@ function hasInvalidInput(inputList) {
       })
       
   
-      setEventListener(formElement)
+      setEventListener(formElement, config)
     })
   }
 

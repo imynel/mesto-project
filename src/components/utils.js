@@ -1,5 +1,5 @@
-import createCards from './card.js'
-import {closedPopup} from './modal.js'
+import { createCard, renderCard} from './card.js'
+import {closePopup} from './modal.js'
 import {
     nameProfile,
     nameInput,
@@ -10,6 +10,7 @@ import {
     popupCards,
     popupProfile,
     buttonCard,
+    sectionCards
 } from './consts.js'
 
 function handleFormSubmitProfile(evt) {
@@ -18,7 +19,7 @@ function handleFormSubmitProfile(evt) {
     nameProfile.textContent = nameInput.value
     jobProfile.textContent = jobInput.value
   
-    closedPopup(popupProfile)
+    closePopup(popupProfile)
 }
 
 function handleFormSubmitCards(evt) {
@@ -26,10 +27,11 @@ function handleFormSubmitCards(evt) {
     
     const linkCard = linkInput.value
     const placeCard = placeInput.value
+
+    const card = createCard(placeCard, linkCard);
+    renderCard(card, sectionCards); 
   
-    createCards(placeCard, linkCard)  
-  
-    closedPopup(popupCards)
+    closePopup(popupCards)
   
     placeInput.value = ''
     linkInput.value = ''

@@ -1,16 +1,23 @@
-import {openedPopup} from './modal.js'
+import {openPopup} from './modal.js'
 import {
     popupTitle,
     popupImage,
     imagePopup,
-    sectionCards,
+    sectionCards
 } from './consts.js'
 
+function createTemplate() {
+  
+  return  //НАДЕЮСЬ СДЕЛАЛ ТАК
+}
 
+function renderCard(card, container) {
+  container.prepend(card)
+}
 
-  export default function createCard(name, link) {
-    
+function createCard(name, link) {
     const cardTemplate = document.querySelector('#card').content
+    
     const cardAdd = cardTemplate.querySelector('.card').cloneNode(true)
     
   
@@ -26,18 +33,17 @@ import {
     trashCard.addEventListener('click', () => cardAdd.remove())
   
     const imageCard = cardInfo
+    console.log(cardInfo)
       imageCard.addEventListener('click', () => {
         popupTitle.textContent = cardAdd.querySelector('.card__heading').textContent
         imagePopup.src = cardInfo.src  
         imagePopup.alt = popupTitle.textContent
-        openedPopup(popupImage)
+        openPopup(popupImage)
       }
     )
-      
-    return renderCard(cardAdd, sectionCards)
-  }
 
-  function renderCard(card, container) {
-    container.prepend(card)
-  }
+    return cardAdd
+}
+
   
+export { createCard, renderCard }
