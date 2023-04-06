@@ -33,7 +33,6 @@ function createCard(name, link) {
     trashCard.addEventListener('click', () => cardAdd.remove())
   
     const imageCard = cardInfo
-    console.log(cardInfo)
       imageCard.addEventListener('click', () => {
         popupTitle.textContent = cardAdd.querySelector('.card__heading').textContent
         imagePopup.src = cardInfo.src  

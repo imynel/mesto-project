@@ -15,6 +15,12 @@ import {
   popupProfile,
   initialCards,
   sectionCards,
+  nameInput,
+  nameProfile,
+  jobInput,
+  jobProfile,
+  placeInput,
+  linkInput,
 } from './consts.js'
 import { createCard, renderCard } from './card.js'
 
@@ -35,18 +41,18 @@ enableValidation({
   errorClass: 'form__input-error_active',
 }); 
 
-
-
-
-
-
-
 // слушатели
 buttonOpenPopupProfile.addEventListener('click', () => {
+
+  nameInput.value = nameProfile.textContent
+  jobInput.value = jobProfile.textContent
+  
   openPopup(popupProfile)
 })
 
 buttonOpenPopupCard.addEventListener('click', () => {
+  placeInput.value = ''
+  linkInput.value = ''
   openPopup(popupCards)
 })
 
