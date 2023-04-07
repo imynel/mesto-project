@@ -71,3 +71,12 @@ buttonClosePopupImage.addEventListener('click', () => {
 formElementCards.addEventListener('submit', handleFormSubmitCards)
 formElementProfile.addEventListener('submit', handleFormSubmitProfile)
 
+fetch('https://nomoreparties.co/v1/plus-cohort-22/cards', {
+    headers: {
+        authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a'
+    }
+})
+    .then(res => res.json())
+    .then(res => {
+      console.log(res)
+    })
