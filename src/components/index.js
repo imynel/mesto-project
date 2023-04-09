@@ -1,3 +1,5 @@
+import './api.js'
+import { gitInitialCards } from './api.js'
 import '../pages/index.css';
 import {openPopup, closePopup, closeByEsc, closeByOverlayClick} from './modal.js'
 import {enableValidation} from './valid.js'
@@ -14,23 +16,23 @@ import {
   popupCards,
   popupProfile,
   initialCards,
-  sectionCards,
   nameInput,
   nameProfile,
   jobInput,
   jobProfile,
   placeInput,
   linkInput,
+  templateSelector,
 } from './consts.js'
-import { createCard, renderCard } from './card.js'
 
-function addCards() { 
-  initialCards.forEach(element => {
-    const card = createCard(element.name, element.link)
-    renderCard(card, sectionCards)
-  })
-}
-addCards()
+
+// function addCards() {
+//   initialCards.forEach(element => {
+//     const card = createCard(element.name, element.link)
+//     renderCard(card, sectionCards)
+//   })
+// }
+// addCards()
 
 enableValidation({
   formSelector: '.form',
@@ -39,14 +41,14 @@ enableValidation({
   inactiveButtonClass: 'form__submit_inactive',
   inputErrorClass: 'form__input_type-error',
   errorClass: 'form__input-error_active',
-}); 
+});
 
 // слушатели
 buttonOpenPopupProfile.addEventListener('click', () => {
 
   nameInput.value = nameProfile.textContent
   jobInput.value = jobProfile.textContent
-  
+
   openPopup(popupProfile)
 })
 
@@ -68,15 +70,13 @@ buttonClosePopupImage.addEventListener('click', () => {
   closePopup(popupImage)
 })
 
-formElementCards.addEventListener('submit', handleFormSubmitCards)
+formElementCards.addEventListener('submit', () => {
+  gitInitialCards()
+  .then(() => {
+    handleFormSubmitCards()
+  })
+  .catch(err => console.log(`Ошибка - ${err}`))
+})
+
 formElementProfile.addEventListener('submit', handleFormSubmitProfile)
 
-fetch('https://nomoreparties.co/v1/plus-cohort-22/cards', {
-    headers: {
-        authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a'
-    }
-})
-    .then(res => res.json())
-    .then(res => {
-      console.log(res)
-    })

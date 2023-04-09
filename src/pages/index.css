@@ -26,6 +26,9 @@
 @import url(../blocks/card/__heart/card__heart.css);
 @import url(../blocks/card/__trash/card__trash.css);
 @import url(../blocks/card/__heart/card__heart_active.css);
+@import url(../blocks/card/__heart-and-count/card__heart-and-count.css);
+@import url(../blocks/card/__count-heart/card__count-heart.css);
+@import url(../blocks/card/__trash/__trash_inactive/card__trash_inactive.css);
 
 /* block footer */
 @import url(../blocks/footer/footer.css);

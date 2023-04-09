@@ -76,15 +76,18 @@
     </section>
 
     <template id="card">
-      <div class="card">
+      <div class="card" data-id="">
         <button class="card__trash" type="button"></button>
         <img src="" class="card__image" alt="">
         <div class="card__heading-and-heart">
           <h3 class="card__heading"></h3>
-          <button type="button" class="card__heart"></button>
+          <div class="card__heart-and-count">
+            <button type="button" class="card__heart"></button>
+            <p class="card__count-heart"></p>
+          </div>
         </div>
       </div>
-    </template> 
+    </template>
 
   </div>
 </body>

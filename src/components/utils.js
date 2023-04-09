@@ -10,29 +10,30 @@ import {
     popupCards,
     popupProfile,
     buttonCard,
-    sectionCards
+    sectionCards,
+    templateSelector
 } from './consts.js'
 
 function handleFormSubmitProfile(evt) {
     evt.preventDefault()
-  
+
     nameProfile.textContent = nameInput.value
     jobProfile.textContent = jobInput.value
-  
+
     closePopup(popupProfile)
 }
 
-function handleFormSubmitCards(evt) {
-    evt.preventDefault() 
-    
+function handleFormSubmitCards() {
+    // evt.preventDefault()
+
     const linkCard = linkInput.value
     const placeCard = placeInput.value
 
-    const card = createCard(placeCard, linkCard);
-    renderCard(card, sectionCards); 
-  
+    const card = createCard(placeCard, linkCard, templateSelector);
+    renderCard(card, sectionCards);
+
     closePopup(popupCards)
-  
+
     placeInput.value = ''
     linkInput.value = ''
     buttonCard.disabled = true

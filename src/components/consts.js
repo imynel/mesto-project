@@ -20,6 +20,7 @@ const buttonOpenPopupCard = document.querySelector('.profile__add-button') // д
 const buttonClosePopupProfile = popupProfile.querySelector('.popup__close-image')
 const buttonClosePopupCards = popupCards.querySelector('.popup__close-image')
 const sectionCards = document.querySelector('.cards')
+const templateSelector = '#card'
 
 const initialCards = [
     {
@@ -51,7 +52,7 @@ const initialCards = [
 
 export {
     popupCards,
-    popupProfile, 
+    popupProfile,
     formElementCards,
     linkInput,
     nameProfile,
@@ -71,4 +72,5 @@ export {
     buttonClosePopupProfile,
     sectionCards,
     buttonCard,
+    templateSelector,
 }
