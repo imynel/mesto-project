@@ -11,11 +11,12 @@ import {
     popupProfile,
     buttonCard,
     sectionCards,
-    templateSelector
+    templateSelector,
+    popupAvatar,
+    avatarInput
 } from './consts.js'
 
-function handleFormSubmitProfile(evt) {
-    evt.preventDefault()
+function handleFormSubmitProfile() {
 
     nameProfile.textContent = nameInput.value
     jobProfile.textContent = jobInput.value
@@ -24,7 +25,6 @@ function handleFormSubmitProfile(evt) {
 }
 
 function handleFormSubmitCards() {
-    // evt.preventDefault()
 
     const linkCard = linkInput.value
     const placeCard = placeInput.value
@@ -40,7 +40,12 @@ function handleFormSubmitCards() {
     buttonCard.classList.add('form__submit_inactive')
   }
 
-export {handleFormSubmitProfile, handleFormSubmitCards}
+function handleFormSubmitAvatar() {
+  closePopup(popupAvatar)
+  avatarInput.value = ''
+}
+
+export {handleFormSubmitProfile, handleFormSubmitCards, handleFormSubmitAvatar}
 
 
 // const logo = new URL('../images/logo/logo.svg', import.meta.url)

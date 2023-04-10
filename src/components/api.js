@@ -69,7 +69,6 @@ fetch('https://nomoreparties.co/v1/plus-cohort-22/cards', {
 })
   .then(res => res.json())
   .then(res => {
-    console.log(res)
     res.forEach(element => {
       const card = createCard(element.name, element.link, templateSelector)
       card.dataset.id = element._id
@@ -106,4 +105,24 @@ fetch('https://nomoreparties.co/v1/plus-cohort-22/users/me', {
     jobProfile.textContent = res.about
   })
 
+function changeAvatar(link) {
+  return fetch('https://nomoreparties.co/v1/plus-cohort-22/users/me/avatar', {
+    method: 'PATCH',
+    headers: {
+      authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      avatar: link
+    })
+  })
+    .then(res => {
+      if (res.ok) {
+        return res.json()
+      }
+      return Promise.reject(`Ошибка: ${res.status}`)
+    })
+    .then(data => console.log(data))
+}
 
+export { changeAvatar }

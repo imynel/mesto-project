@@ -1,9 +1,9 @@
 import './api.js'
-import { gitInitialCards } from './api.js'
+import { gitInitialCards, changeAvatar } from './api.js'
 import '../pages/index.css';
 import {openPopup, closePopup, closeByEsc, closeByOverlayClick} from './modal.js'
 import {enableValidation} from './valid.js'
-import {handleFormSubmitProfile, handleFormSubmitCards} from './utils.js'
+import {handleFormSubmitProfile, handleFormSubmitCards, handleFormSubmitAvatar} from './utils.js'
 import {
   buttonOpenPopupCard,
   buttonOpenPopupProfile,
@@ -22,7 +22,11 @@ import {
   jobProfile,
   placeInput,
   linkInput,
-  templateSelector,
+  popupAvatar,
+  buttonClosePopupAvatar,
+  buttonAvatar,
+  formElementAvatar,
+  avatarInput
 } from './consts.js'
 
 
@@ -58,6 +62,10 @@ buttonOpenPopupCard.addEventListener('click', () => {
   openPopup(popupCards)
 })
 
+buttonAvatar.addEventListener('click', () => {
+  openPopup(popupAvatar)
+})
+
 buttonClosePopupProfile.addEventListener('click', () => {
   closePopup(popupProfile)
 })
@@ -70,6 +78,10 @@ buttonClosePopupImage.addEventListener('click', () => {
   closePopup(popupImage)
 })
 
+buttonClosePopupAvatar.addEventListener('click', () => {
+  closePopup(popupAvatar)
+})
+
 formElementCards.addEventListener('submit', () => {
   gitInitialCards()
   .then(() => {
@@ -79,4 +91,13 @@ formElementCards.addEventListener('submit', () => {
 })
 
 formElementProfile.addEventListener('submit', handleFormSubmitProfile)
+formElementAvatar.addEventListener('submit', () => {
+  changeAvatar(avatarInput.value)
+  .then(data => {
+    console.log(avatarInput.value)
+    buttonAvatar.style.backgroundImage = `url('${avatarInput.value}')`
+    console.log(buttonAvatar)
+    handleFormSubmitAvatar()
+  })
+})
 

@@ -6,8 +6,6 @@ import {
     sectionCards,
     templateSelector
 } from './consts.js'
-import { cardId } from './api.js'
-
 
 
 function renderCard(card, container) {
@@ -25,13 +23,49 @@ function createCard(name, link, templateSelector) {
     cardInfo.alt = name
 
     const heartCard = cardAdd.querySelector('.card__heart')
-    heartCard.addEventListener('click', () => heartCard.classList.toggle('card__heart_active'))
+    heartCard.addEventListener('click', () => {
+      const cardId = cardAdd.dataset.id
+      console.log(heartCard.classList.contains('card__heart_active'))
+      if (heartCard.classList.contains('card__heart_active')) {
+        fetch(`https://nomoreparties.co/v1/plus-cohort-22/cards/likes/${cardId}`, {
+          method: 'DELETE',
+          headers: {
+            authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a'
+          }
+        })
+          .then(res => {
+            if (res.ok) return res.json()
+          })
+          .then((data) => {
+            heartCard.classList.remove('card__heart_active')
+          })
+          .catch(err => console.log(`Ошибка - ${err}`))
+      } else {
+        fetch(`https://nomoreparties.co/v1/plus-cohort-22/cards/likes/${cardId}`, {
+          method: 'PUT',
+          headers: {
+            authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a',
+            'Content-Type': 'application/json'
+          },
+        })
+          .then(res => {
+            if (res.ok) return res.json()
+            return Promise.reject(`Ошибка: ${res.status}`)
+          })
+          .then(date => {
+            heartCard.classList.add('card__heart_active')
+          })
+          .catch(err => console.log(err))
+      }
+
+
+
+    })
 
     const trashCard = cardAdd.querySelector('.card__trash')
     trashCard.addEventListener('click', () => {
     const cardId = cardAdd.dataset.id
-    console.log(cardId)
-    fetch(`https://nomoreparties.co/v1/plus-cohort-22/cards/${cardId}`, {
+    fetch(`https://nomoreparties.co/v1/plus-cohort-22/cards/likes/${cardId}`, {
       method: 'DELETE',
       headers: {
         authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a'
@@ -41,7 +75,6 @@ function createCard(name, link, templateSelector) {
         if (res.ok) return res.json()
       })
       .then((data) => {
-        console.log(data)
         cardAdd.remove()
       })
       .catch(err => console.log(`Ошибка - ${err}`))

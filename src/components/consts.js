@@ -1,5 +1,7 @@
 const popupCards = document.querySelector('.popup-cards')
 const popupProfile = document.querySelector('.popup-profile')
+const popupAvatar = document.querySelector('.popup-avatar')
+const formElementAvatar = popupAvatar.querySelector('.popup__form')
 const formElementCards = popupCards.querySelector('.popup__form')
 const linkInput = formElementCards.querySelector('.name_link')
 const nameProfile = document.querySelector('.profile__name')
@@ -8,19 +10,22 @@ const formElementProfile = popupProfile.querySelector('.popup__form')
 const nameInput = formElementProfile.querySelector('.name_input')
 const jobInput = formElementProfile.querySelector('.job_input')
 const placeInput = formElementCards.querySelector('.name_place')
+const avatarInput = popupAvatar.querySelector('.avatar_input')
 const popupImage = document.querySelector('.popup-image')
 const buttonCard = popupCards.querySelector('.popup__button')
 const buttonClosePopupImage = popupImage.querySelector('.popup__close-image')
 const imagePopup = popupImage.querySelector('.popup-image__image')
 const popupTitle = popupImage.querySelector('.popup-image__title')
-
+const buttonAvatar = document.querySelector('.avatar__button')
 // Для открытия и закрытия попапа
 const buttonOpenPopupProfile = document.querySelector('.profile__button') // для открытия кнопки редактирования
 const buttonOpenPopupCard = document.querySelector('.profile__add-button') // для открытия попапа добавления карточек
 const buttonClosePopupProfile = popupProfile.querySelector('.popup__close-image')
 const buttonClosePopupCards = popupCards.querySelector('.popup__close-image')
+const buttonClosePopupAvatar = popupAvatar.querySelector('.popup__close-image')
 const sectionCards = document.querySelector('.cards')
 const templateSelector = '#card'
+const buttonSaveAvatar = popupAvatar.querySelector('.popup__button')
 
 const initialCards = [
     {
@@ -73,4 +78,10 @@ export {
     sectionCards,
     buttonCard,
     templateSelector,
+    buttonClosePopupAvatar,
+    popupAvatar,
+    buttonAvatar,
+    buttonSaveAvatar,
+    formElementAvatar,
+    avatarInput
 }
