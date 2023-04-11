@@ -5,6 +5,7 @@ import {
   placeInput,
   linkInput,
   templateSelector,
+  buttonAvatar,
 } from './consts.js'
 import { createCard, renderCard } from './card.js'
 
@@ -14,6 +15,44 @@ const config = {
     authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a',
     'Content-Type': 'application/json'
   }
+}
+
+// ЗАПРОС ДЛЯ ИНФОРМАЦИИ О ЮЗЕРЕ
+const getRequestUsersMe = () => {
+  return fetch(`${config.baseUrl}/users/me`, {
+    headers: config.headers
+  })
+  .then(res => {
+    if (res.ok) return res.json()
+    return Promise.reject(`Ошибка - ${res.status}`)
+  })
+}
+
+// ЗАПРОС ДЛЯ ИНФОРМАЦИИ О КАРТОЧКАХ
+const getRequestCards = () => {
+  return fetch(`${config.baseUrl}/cards`, {
+    headers: config.headers
+  })
+  .then(res => {
+    if (res.ok) return res.json()
+    return Promise.reject(`Ошибка - ${res.status}`)
+  })
+} 
+
+// ЗАПРОС ДЛЯ ОБНОВЛЕНИЯ ИНФОРМАЦИИ ПРОФИЛЯ
+const patchRequestPrifile = (nameProfile, aboutProfile) => {
+  return fetch(`${config.baseUrl}/users/me`, {
+    method: 'PATCH',
+    headers: config.headers,
+    body: JSON.stringify({
+      name: nameProfile,
+      about: aboutProfile
+    })
+  })
+  .then(res => {
+    if (res.ok) return res.json()
+    return Promise.reject(`Ошибка - ${res.status}`)
+  })
 }
 
 export const gitInitialCards = () => {
@@ -34,44 +73,12 @@ export const gitInitialCards = () => {
 }
 
 
-fetch('https://nomoreparties.co/v1/plus-cohort-22/users/me', {
-    headers: {
-        authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a'
-    }
-})
-    .then(res => res.json())
-    .then(res => {
-      console.log(res)
-    })
-    .catch(err => console.log(`Ошибка - ${err}`))
-
-// fetch('https://nomoreparties.co/v1/plus-cohort-22/cards', {
-//   method: 'POST',
-//   headers: {
-//     authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a',
-//     'Content-Type': 'application/json',
-//   },
-//   body: JSON.stringify({
-//     likes: []
-//   })
-// })
-//   .then(res => res.json())
-//   .then(res => console.log(res))
-
-fetch('https://nomoreparties.co/v1/plus-cohort-22/cards', {
-  headers: {
-    authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a'
-  },
-// body: JSON.stringify({
-//     name: placeInput,
-//     link: linkInput,
-//   })
-})
-  .then(res => res.json())
+getRequestCards()
   .then(res => {
     res.forEach(element => {
       const card = createCard(element.name, element.link, templateSelector)
       card.dataset.id = element._id
+      card.id = element._id
       renderCard(card, sectionCards)
       const heartCount = card.querySelector('.card__count-heart')
       const trash = card.querySelector('.card__trash')
@@ -84,26 +91,16 @@ fetch('https://nomoreparties.co/v1/plus-cohort-22/cards', {
         heartCount.textContent = element.likes.length
       }
     })
-
+    getRequestUsersMe()
+    .then((data) => {
+      console.log(data)
+      buttonAvatar.style.backgroundImage = `url('${data.avatar}')`
+      nameProfile.textContent = data.name
+      jobProfile.textContent = data.about
+    })
   })
   .catch(err => console.log(err.status, err))
 
-fetch('https://nomoreparties.co/v1/plus-cohort-22/users/me', {
-  method: 'PATCH',
-  headers: {
-    authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a',
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    name: 'Imynel',
-    about: 'junior developer'
-  })
-})
-  .then(res => res.json())
-  .then(res => {
-    nameProfile.textContent = res.name
-    jobProfile.textContent = res.about
-  })
 
 function changeAvatar(link) {
   return fetch('https://nomoreparties.co/v1/plus-cohort-22/users/me/avatar', {
@@ -122,7 +119,54 @@ function changeAvatar(link) {
       }
       return Promise.reject(`Ошибка: ${res.status}`)
     })
-    .then(data => console.log(data))
 }
 
-export { changeAvatar }
+const checkLikes = () => {
+  return fetch('https://nomoreparties.co/v1/plus-cohort-22/users/me', {
+    headers: {
+      authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a',
+    },
+  })
+  .then(res => {
+    if (res.ok) return res.json()
+    return Promise.reject(`Ошибка: ${res.status}`)
+  })
+  .then(data => {
+    return data
+  })
+}
+
+const giveCards = () => {
+  return fetch('https://nomoreparties.co/v1/plus-cohort-22/cards', {
+    headers: {
+      authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a',
+    },
+  })
+  .then(res => {
+    if (res.ok) return res.json()
+    return Promise.reject(`Ошибка: ${res.status}`)
+  })
+  .then(data => {
+    return data
+  })
+}
+
+Promise.all([checkLikes(), giveCards()])
+  .then(([checkLikes, giveCards]) => {
+    console.log(checkLikes, giveCards)
+    giveCards.forEach(elm => {
+      elm.likes.forEach(element => {
+        if (element._id === '8d66a7f77463436798952378') {
+          const cardId = document.getElementById(`${elm._id}`)
+          const cardLike = cardId.querySelector('.card__heart')
+          cardLike.classList.add('card__heart_active')
+        }
+      }) 
+      
+    })
+  })
+  .catch(err => console.log(err))
+
+export { changeAvatar, patchRequestPrifile }
+
+

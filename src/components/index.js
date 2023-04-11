@@ -1,5 +1,5 @@
 import './api.js'
-import { gitInitialCards, changeAvatar } from './api.js'
+import { gitInitialCards, changeAvatar, patchRequestPrifile } from './api.js'
 import '../pages/index.css';
 import {openPopup, closePopup, closeByEsc, closeByOverlayClick} from './modal.js'
 import {enableValidation} from './valid.js'
@@ -90,13 +90,18 @@ formElementCards.addEventListener('submit', () => {
   .catch(err => console.log(`Ошибка - ${err}`))
 })
 
-formElementProfile.addEventListener('submit', handleFormSubmitProfile)
+formElementProfile.addEventListener('submit', () => {
+  patchRequestPrifile(nameInput.value, jobInput.value)
+    .then(data => {
+      nameProfile.textContent = data.name
+      jobProfile.textContent = data.about
+    })
+  handleFormSubmitProfile()
+})
 formElementAvatar.addEventListener('submit', () => {
   changeAvatar(avatarInput.value)
-  .then(data => {
-    console.log(avatarInput.value)
+  .then(() => {
     buttonAvatar.style.backgroundImage = `url('${avatarInput.value}')`
-    console.log(buttonAvatar)
     handleFormSubmitAvatar()
   })
 })

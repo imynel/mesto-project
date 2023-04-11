@@ -25,7 +25,6 @@ function createCard(name, link, templateSelector) {
     const heartCard = cardAdd.querySelector('.card__heart')
     heartCard.addEventListener('click', () => {
       const cardId = cardAdd.dataset.id
-      console.log(heartCard.classList.contains('card__heart_active'))
       if (heartCard.classList.contains('card__heart_active')) {
         fetch(`https://nomoreparties.co/v1/plus-cohort-22/cards/likes/${cardId}`, {
           method: 'DELETE',
@@ -65,7 +64,7 @@ function createCard(name, link, templateSelector) {
     const trashCard = cardAdd.querySelector('.card__trash')
     trashCard.addEventListener('click', () => {
     const cardId = cardAdd.dataset.id
-    fetch(`https://nomoreparties.co/v1/plus-cohort-22/cards/likes/${cardId}`, {
+    fetch(`https://nomoreparties.co/v1/plus-cohort-22/cards/${cardId}`, {
       method: 'DELETE',
       headers: {
         authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a'
@@ -73,6 +72,7 @@ function createCard(name, link, templateSelector) {
     })
       .then(res => {
         if (res.ok) return res.json()
+        return Promise.reject(`Ошибка: ${res.status}`)
       })
       .then((data) => {
         cardAdd.remove()
