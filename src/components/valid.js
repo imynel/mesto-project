@@ -11,16 +11,15 @@ function hasInvalidInput(inputList) {
     if (hasInvalidInput(inputList)) {
       buttonElement.disabled = true
       buttonElement.classList.add(config.inactiveButtonClass)
-
     } else {
       buttonElement.disabled = false
       buttonElement.classList.remove(config.inactiveButtonClass)
-
     }
   }
 
   const showInputError = (formElement, inputElement, errorMessage, config) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+
     inputElement.classList.add(config.inputErrorClass)
     errorElement.textContent = errorMessage
     errorElement.classList.add(config.errorClass)
@@ -46,7 +45,6 @@ function hasInvalidInput(inputList) {
 
     if(!inputElement.validity.valid) {
       showInputError(formElement, inputElement, inputElement.validationMessage, config)
-      console.log(inputElement)
     } else {
       hideInputError(formElement, inputElement, config)
     }
@@ -69,8 +67,8 @@ function hasInvalidInput(inputList) {
     const formList = Array.from(document.querySelectorAll(config.formSelector))
 
     formList.forEach((formElement) => {
-      formElement.addEventListener('submit', (evt) => {
-        evt.preventDefault()
+      formElement.addEventListener('submit', () => {
+        isValid(formElement, inputElement, config)
       })
 
 
