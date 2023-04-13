@@ -10,7 +10,6 @@ import {
     sectionCards,
     popupAvatar,
     avatarInput,
-    buttonAvatar,
     avatarImage,
     nameInput,
     jobInput,

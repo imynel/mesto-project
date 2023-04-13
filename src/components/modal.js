@@ -1,31 +1,19 @@
-
+import { popups } from './consts.js'
 function openPopup(popup) {
   popup.classList.add('popup_opened')
   document.addEventListener('keydown', closeByEsc)
-  popup.addEventListener('mousedown', closeByOverlayClick)
-
 }
 
 
 function closePopup(popup) {
     popup.classList.remove('popup_opened')
     document.removeEventListener('keydown', closeByEsc)
-    popup.removeEventListener('mousedown', closeByOverlayClick)
 }
 
 function closeByEsc(evt) {
-  debugger
   if (evt.key === "Escape") {
       const openedPopup = document.querySelector(".popup_opened")
       closePopup(openedPopup)
-  }
-}
-
-function closeByOverlayClick(evt) {
-  debugger
-  if (evt.target.classList.contains('popup_opened')) {
-    const openedPopup = document.querySelector(".popup_opened")
-    closePopup(openedPopup)
   }
 }
 
@@ -38,10 +26,17 @@ function renderLoading(isLoad, evt) {
   }
 }
 
+popups.forEach(element => {
+  element.addEventListener('mousedown',  evt => {
+    if (evt.target.classList.contains('popup_opened')) {
+      closePopup(element)
+    }
+  })
+});
+
 export {
     openPopup,
     closePopup,
     closeByEsc,
-    closeByOverlayClick,
     renderLoading,
 }

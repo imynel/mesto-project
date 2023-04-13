@@ -28,6 +28,7 @@ const sectionCards = document.querySelector('.cards')
 const templateSelector = '#card'
 const buttonSaveAvatar = popupAvatar.querySelector('.popup__button')
 const id = []
+const popups = document.querySelectorAll('.popup')
 
 const initialCards = [
     {
@@ -87,5 +88,6 @@ export {
     formElementAvatar,
     avatarInput,
     avatarImage,
-    id
+    id,
+    popups
 }
