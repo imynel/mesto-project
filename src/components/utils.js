@@ -19,6 +19,7 @@ import {
 } from './consts.js'
 
 function handleFormSubmitProfile(evt) {
+  evt.preventDefault()
   renderLoading(true, evt)
   patchRequestPrifile(nameInput.value, jobInput.value)
     .then(data => {
@@ -31,6 +32,7 @@ function handleFormSubmitProfile(evt) {
 }
 
 function handleFormSubmitCards(evt) {
+  evt.preventDefault()
   renderLoading(true, evt)
   gitInitialCards(placeInput.value, linkInput.value)
   .then(item => {
@@ -48,6 +50,7 @@ function handleFormSubmitCards(evt) {
   }
 
 function handleFormSubmitAvatar(evt) {
+  evt.preventDefault()
   renderLoading(true, evt)
   changeAvatar(avatarInput.value)
   .then(() => {

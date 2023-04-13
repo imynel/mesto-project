@@ -82,12 +82,9 @@ const deleteRequestCard = (id) => {
 
 
 function changeAvatar(link) {
-  return fetch('https://nomoreparties.co/v1/plus-cohort-22/users/me/avatar', {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
-    headers: {
-      authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a',
-      'Content-Type': 'application/json',
-    },
+    headers: config.headers,
     body: JSON.stringify({
       avatar: link
     })
