@@ -5,20 +5,20 @@ function openPopup(popup) {
   document.addEventListener('mousedown', closeByOverlayClick)
 
 }
-  
+
 
 function closePopup(popup) {
     popup.classList.remove('popup_opened')
-    document.removeEventListener('keydown', closeByEsc)
-    document.removeEventListener('mousedown', closeByOverlayClick)
+    popup.removeEventListener('keydown', closeByEsc)
+    popup.removeEventListener('mousedown', closeByOverlayClick)
 }
 
 function closeByEsc(evt) {
-  if (evt.key === "Escape") { 
+  if (evt.key === "Escape") {
       const openedPopup = document.querySelector(".popup_opened")
-      closePopup(openedPopup) 
-  } 
-} 
+      closePopup(openedPopup)
+  }
+}
 
 function closeByOverlayClick(evt) {
   if (evt.target.classList.contains('popup_opened')) {
@@ -27,9 +27,19 @@ function closeByOverlayClick(evt) {
   }
 }
 
+function renderLoading(isLoad, evt) {
+  const buttonLoading = evt.target.querySelector('.popup__button')
+  if(isLoad) {
+    buttonLoading.textContent = buttonLoading.dataset.value
+  } else {
+    buttonLoading.textContent = buttonLoading.value
+  }
+}
+
 export {
-    openPopup, 
-    closePopup, 
+    openPopup,
+    closePopup,
     closeByEsc,
     closeByOverlayClick,
+    renderLoading,
 }

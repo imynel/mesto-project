@@ -17,6 +17,7 @@ const buttonClosePopupImage = popupImage.querySelector('.popup__close-image')
 const imagePopup = popupImage.querySelector('.popup-image__image')
 const popupTitle = popupImage.querySelector('.popup-image__title')
 const buttonAvatar = document.querySelector('.avatar__button')
+const avatarImage = document.querySelector('.profile__image')
 // Для открытия и закрытия попапа
 const buttonOpenPopupProfile = document.querySelector('.profile__button') // для открытия кнопки редактирования
 const buttonOpenPopupCard = document.querySelector('.profile__add-button') // для открытия попапа добавления карточек
@@ -26,6 +27,7 @@ const buttonClosePopupAvatar = popupAvatar.querySelector('.popup__close-image')
 const sectionCards = document.querySelector('.cards')
 const templateSelector = '#card'
 const buttonSaveAvatar = popupAvatar.querySelector('.popup__button')
+const id = []
 
 const initialCards = [
     {
@@ -83,5 +85,7 @@ export {
     buttonAvatar,
     buttonSaveAvatar,
     formElementAvatar,
-    avatarInput
+    avatarInput,
+    avatarImage,
+    id
 }

@@ -1,48 +1,64 @@
 import { createCard, renderCard} from './card.js'
-import {closePopup} from './modal.js'
+import {closePopup, renderLoading} from './modal.js'
+import { changeAvatar, gitInitialCards, patchRequestPrifile } from './api.js'
 import {
-    nameProfile,
-    nameInput,
-    jobProfile,
-    jobInput,
     placeInput,
     linkInput,
     popupCards,
     popupProfile,
     buttonCard,
     sectionCards,
-    templateSelector,
     popupAvatar,
-    avatarInput
+    avatarInput,
+    buttonAvatar,
+    avatarImage,
+    nameInput,
+    jobInput,
+    nameProfile,
+    jobProfile,
 } from './consts.js'
 
-function handleFormSubmitProfile() {
-
-    nameProfile.textContent = nameInput.value
-    jobProfile.textContent = jobInput.value
-
-    closePopup(popupProfile)
+function handleFormSubmitProfile(evt) {
+  renderLoading(true, evt)
+  patchRequestPrifile(nameInput.value, jobInput.value)
+    .then(data => {
+      nameProfile.textContent = data.name
+      jobProfile.textContent = data.about
+      closePopup(popupProfile)
+    })
+    .catch(err => console.log(`Ошибка - ${err}`))
+    .finally(() => renderLoading(false, evt))
 }
 
-function handleFormSubmitCards() {
-
-    const linkCard = linkInput.value
-    const placeCard = placeInput.value
-
-    const card = createCard(placeCard, linkCard, templateSelector);
+function handleFormSubmitCards(evt) {
+  renderLoading(true, evt)
+  gitInitialCards(placeInput.value, linkInput.value)
+  .then(item => {
+    const card = createCard(item);
     renderCard(card, sectionCards);
-
     closePopup(popupCards)
-
-    placeInput.value = ''
-    linkInput.value = ''
     buttonCard.disabled = true
     buttonCard.classList.add('form__submit_inactive')
+    placeInput.value = ''
+    linkInput.value = ''
+  })
+  .catch(err => console.log(`Ошибка: - ${err.status}`))
+
+  .finally(() => renderLoading(false, evt))
   }
 
-function handleFormSubmitAvatar() {
-  closePopup(popupAvatar)
-  avatarInput.value = ''
+function handleFormSubmitAvatar(evt) {
+  renderLoading(true, evt)
+  changeAvatar(avatarInput.value)
+  .then(() => {
+    avatarImage.src = avatarInput.value
+    closePopup(popupAvatar)
+    buttonCard.disabled = true
+    buttonCard.classList.add('form__submit_inactive')
+    avatarInput.value = ''
+  })
+  .catch(err => console.log(err))
+  .finally(() => renderLoading(false, evt))
 }
 
 export {handleFormSubmitProfile, handleFormSubmitCards, handleFormSubmitAvatar}

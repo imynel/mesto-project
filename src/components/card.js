@@ -3,82 +3,71 @@ import {
     popupTitle,
     popupImage,
     imagePopup,
-    sectionCards,
-    templateSelector
+    templateSelector,
+    id
 } from './consts.js'
-
+import { deleteRequestCardId, deleteRequestCardsLikesID, deleteRequestCard } from './api.js'
 
 function renderCard(card, container) {
   container.prepend(card)
 }
 
-function createCard(name, link, templateSelector) {
+const myLikes = (likes, button) => {
+  likes.forEach(element => {
+    if (element._id === id.id) {
+      button.classList.add('card__heart_active')
+    }
+  })
+}
+
+const setLikes = (likes, number) => {
+  if (likes.length > 0) {
+    number.textContent = likes.length
+  }
+  else number.textContent = '0'
+}
+
+const deleteTrash = (owner, trash) => {
+  if (id.id !== owner) trash.remove()
+}
+
+function createCard(item) {
     const cardTemplate = document.querySelector(templateSelector).content
 
     const cardAdd = cardTemplate.querySelector('.card').cloneNode(true)
+    const countLikes = cardAdd.querySelector('.card__count-heart')
 
-    cardAdd.querySelector('.card__heading').textContent = name
+    cardAdd.querySelector('.card__heading').textContent = item.name
     const cardInfo = cardAdd.querySelector('.card__image')
-    cardInfo.src = link
-    cardInfo.alt = name
+    cardInfo.src = item.link
+    cardInfo.alt = item.name
 
     const heartCard = cardAdd.querySelector('.card__heart')
-    heartCard.addEventListener('click', () => {
-      const cardId = cardAdd.dataset.id
+    heartCard.addEventListener('click', (evt) => {
       if (heartCard.classList.contains('card__heart_active')) {
-        fetch(`https://nomoreparties.co/v1/plus-cohort-22/cards/likes/${cardId}`, {
-          method: 'DELETE',
-          headers: {
-            authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a'
-          }
-        })
-          .then(res => {
-            if (res.ok) return res.json()
-          })
-          .then((data) => {
-            heartCard.classList.remove('card__heart_active')
+        deleteRequestCardId(item._id)
+          .then((item) => {
+            myLikes(item.likes, evt.target)
+            setLikes(item.likes, countLikes)
+            evt.target.classList.remove('card__heart_active')
           })
           .catch(err => console.log(`Ошибка - ${err}`))
       } else {
-        fetch(`https://nomoreparties.co/v1/plus-cohort-22/cards/likes/${cardId}`, {
-          method: 'PUT',
-          headers: {
-            authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a',
-            'Content-Type': 'application/json'
-          },
+        deleteRequestCardsLikesID(item._id)
+          .then((item) => {
+          myLikes(item.likes, evt.target)
+          setLikes(item.likes, countLikes)
+          heartCard.classList.add('card__heart_active')
         })
-          .then(res => {
-            if (res.ok) return res.json()
-            return Promise.reject(`Ошибка: ${res.status}`)
-          })
-          .then(date => {
-            heartCard.classList.add('card__heart_active')
-          })
-          .catch(err => console.log(err))
+          .catch(err => console.log(`Ошибка - ${err}`))
       }
-
-
-
     })
 
     const trashCard = cardAdd.querySelector('.card__trash')
     trashCard.addEventListener('click', () => {
-    const cardId = cardAdd.dataset.id
-    fetch(`https://nomoreparties.co/v1/plus-cohort-22/cards/${cardId}`, {
-      method: 'DELETE',
-      headers: {
-        authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a'
-      }
-    })
-      .then(res => {
-        if (res.ok) return res.json()
-        return Promise.reject(`Ошибка: ${res.status}`)
-      })
-      .then((data) => {
-        cardAdd.remove()
-      })
+    deleteRequestCard(item._id)
+      .then(() => cardAdd.remove())
       .catch(err => console.log(`Ошибка - ${err}`))
-
     })
 
     const imageCard = cardInfo
@@ -89,6 +78,9 @@ function createCard(name, link, templateSelector) {
         openPopup(popupImage)
       }
     )
+    myLikes(item.likes, heartCard)
+    setLikes(item.likes, countLikes)
+    deleteTrash(item.owner._id, trashCard)
 
     return cardAdd
 }

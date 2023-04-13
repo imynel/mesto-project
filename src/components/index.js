@@ -1,7 +1,7 @@
-import './api.js'
-import { gitInitialCards, changeAvatar, patchRequestPrifile } from './api.js'
 import '../pages/index.css';
-import {openPopup, closePopup, closeByEsc, closeByOverlayClick} from './modal.js'
+import { getRequestCards, getRequestUsersMe } from './api.js'
+import { createCard, renderCard } from './card.js'
+import {openPopup, closePopup} from './modal.js'
 import {enableValidation} from './valid.js'
 import {handleFormSubmitProfile, handleFormSubmitCards, handleFormSubmitAvatar} from './utils.js'
 import {
@@ -15,7 +15,6 @@ import {
   popupImage,
   popupCards,
   popupProfile,
-  initialCards,
   nameInput,
   nameProfile,
   jobInput,
@@ -26,7 +25,9 @@ import {
   buttonClosePopupAvatar,
   buttonAvatar,
   formElementAvatar,
-  avatarInput
+  sectionCards,
+  avatarImage,
+  id,
 } from './consts.js'
 
 
@@ -37,6 +38,24 @@ import {
 //   })
 // }
 // addCards()
+
+
+
+
+Promise.all([getRequestUsersMe(), getRequestCards()])
+  .then(([info, cards]) => {
+    nameProfile.textContent = info.name
+    jobProfile.textContent = info.about
+    avatarImage.src = info.avatar
+    id.id = info._id
+    console.log(id)
+    cards.forEach(element => {
+      const cardElemnt = createCard(element)
+      renderCard(cardElemnt, sectionCards)
+    })
+  })
+  .catch(err => console.log(err))
+
 
 enableValidation({
   formSelector: '.form',
@@ -82,27 +101,8 @@ buttonClosePopupAvatar.addEventListener('click', () => {
   closePopup(popupAvatar)
 })
 
-formElementCards.addEventListener('submit', () => {
-  gitInitialCards()
-  .then(() => {
-    handleFormSubmitCards()
-  })
-  .catch(err => console.log(`Ошибка - ${err}`))
-})
+formElementCards.addEventListener('submit', handleFormSubmitCards)
 
-formElementProfile.addEventListener('submit', () => {
-  patchRequestPrifile(nameInput.value, jobInput.value)
-    .then(data => {
-      nameProfile.textContent = data.name
-      jobProfile.textContent = data.about
-    })
-  handleFormSubmitProfile()
-})
-formElementAvatar.addEventListener('submit', () => {
-  changeAvatar(avatarInput.value)
-  .then(() => {
-    buttonAvatar.style.backgroundImage = `url('${avatarInput.value}')`
-    handleFormSubmitAvatar()
-  })
-})
+formElementProfile.addEventListener('submit', handleFormSubmitProfile)
+formElementAvatar.addEventListener('submit', handleFormSubmitAvatar)
 

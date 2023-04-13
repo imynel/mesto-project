@@ -46,6 +46,7 @@ function hasInvalidInput(inputList) {
 
     if(!inputElement.validity.valid) {
       showInputError(formElement, inputElement, inputElement.validationMessage, config)
+      console.log(inputElement)
     } else {
       hideInputError(formElement, inputElement, config)
     }

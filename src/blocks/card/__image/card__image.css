@@ -9,8 +9,3 @@
   object-position: center;
   margin: 0;
 }
-
-.card__image:hover {
-  transform: scale(1.05, 1.05);
-  z-index: 1;
-}

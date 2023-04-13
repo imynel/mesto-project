@@ -1,13 +1,4 @@
-import {
-  nameProfile,
-  jobProfile,
-  sectionCards,
-  placeInput,
-  linkInput,
-  templateSelector,
-  buttonAvatar,
-} from './consts.js'
-import { createCard, renderCard } from './card.js'
+
 
 const config = {
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-22',
@@ -17,15 +8,17 @@ const config = {
   }
 }
 
+const getResponsData = (res) => {
+  if (res.ok) return res.json()
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 // ЗАПРОС ДЛЯ ИНФОРМАЦИИ О ЮЗЕРЕ
 const getRequestUsersMe = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers
   })
-  .then(res => {
-    if (res.ok) return res.json()
-    return Promise.reject(`Ошибка - ${res.status}`)
-  })
+  .then(res => getResponsData(res))
 }
 
 // ЗАПРОС ДЛЯ ИНФОРМАЦИИ О КАРТОЧКАХ
@@ -33,11 +26,8 @@ const getRequestCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers
   })
-  .then(res => {
-    if (res.ok) return res.json()
-    return Promise.reject(`Ошибка - ${res.status}`)
-  })
-} 
+  .then(res => getResponsData(res))
+}
 
 // ЗАПРОС ДЛЯ ОБНОВЛЕНИЯ ИНФОРМАЦИИ ПРОФИЛЯ
 const patchRequestPrifile = (nameProfile, aboutProfile) => {
@@ -49,57 +39,46 @@ const patchRequestPrifile = (nameProfile, aboutProfile) => {
       about: aboutProfile
     })
   })
-  .then(res => {
-    if (res.ok) return res.json()
-    return Promise.reject(`Ошибка - ${res.status}`)
-  })
+  .then(res => getResponsData(res))
 }
 
-export const gitInitialCards = () => {
+export const gitInitialCards = (place, link) => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers,
     method: 'POST',
     body: JSON.stringify({
-      name: placeInput.value,
-      link: linkInput.value,
+      name: place,
+      link: link,
     })
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json()
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
+  .then(res => getResponsData(res))
+}
+// ЗАПРОС НА УДАЛЕНИЕ ЛАЙКА
+const deleteRequestCardId = (id) => {
+  return fetch(`${config.baseUrl}/cards/likes/${id}`, {
+    method: 'DELETE',
+    headers: config.headers
   })
+  .then(res => getResponsData(res))
 }
 
-
-getRequestCards()
-  .then(res => {
-    res.forEach(element => {
-      const card = createCard(element.name, element.link, templateSelector)
-      card.dataset.id = element._id
-      card.id = element._id
-      renderCard(card, sectionCards)
-      const heartCount = card.querySelector('.card__count-heart')
-      const trash = card.querySelector('.card__trash')
-      if (element.owner._id !== '8d66a7f77463436798952378') {
-        trash.classList.add('card__trash_inactive')
-      }
-      if (element.likes.length === 0){
-        heartCount.textContent = 0
-      } else {
-        heartCount.textContent = element.likes.length
-      }
-    })
-    getRequestUsersMe()
-    .then((data) => {
-      console.log(data)
-      buttonAvatar.style.backgroundImage = `url('${data.avatar}')`
-      nameProfile.textContent = data.name
-      jobProfile.textContent = data.about
-    })
+// ЗАПРОС НА ДОБАВЛЕНИЯ ЛАЙКА
+const deleteRequestCardsLikesID = (id) => {
+  return fetch(`${config.baseUrl}/cards/likes/${id}`, {
+    method: 'PUT',
+    headers: config.headers
   })
-  .catch(err => console.log(err.status, err))
+  .then(res => getResponsData(res))
+}
+
+// ЗАПРОС НА УДАЛЕНИЕ КАРТОЧКИ
+const deleteRequestCard = (id) => {
+  return fetch(`${config.baseUrl}/cards/${id}`, {
+    method: 'DELETE',
+    headers: config.headers
+  })
+  .then(res => getResponsData(res))
+}
 
 
 function changeAvatar(link) {
@@ -113,60 +92,20 @@ function changeAvatar(link) {
       avatar: link
     })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json()
-      }
-      return Promise.reject(`Ошибка: ${res.status}`)
-    })
+    .then(res => getResponsData(res))
 }
 
-const checkLikes = () => {
-  return fetch('https://nomoreparties.co/v1/plus-cohort-22/users/me', {
-    headers: {
-      authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a',
-    },
-  })
-  .then(res => {
-    if (res.ok) return res.json()
-    return Promise.reject(`Ошибка: ${res.status}`)
-  })
-  .then(data => {
-    return data
-  })
+
+
+
+export {
+  changeAvatar,
+  patchRequestPrifile,
+  deleteRequestCardId,
+  deleteRequestCardsLikesID,
+  deleteRequestCard,
+  getRequestCards,
+  getRequestUsersMe,
 }
-
-const giveCards = () => {
-  return fetch('https://nomoreparties.co/v1/plus-cohort-22/cards', {
-    headers: {
-      authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a',
-    },
-  })
-  .then(res => {
-    if (res.ok) return res.json()
-    return Promise.reject(`Ошибка: ${res.status}`)
-  })
-  .then(data => {
-    return data
-  })
-}
-
-Promise.all([checkLikes(), giveCards()])
-  .then(([checkLikes, giveCards]) => {
-    console.log(checkLikes, giveCards)
-    giveCards.forEach(elm => {
-      elm.likes.forEach(element => {
-        if (element._id === '8d66a7f77463436798952378') {
-          const cardId = document.getElementById(`${elm._id}`)
-          const cardLike = cardId.querySelector('.card__heart')
-          cardLike.classList.add('card__heart_active')
-        }
-      }) 
-      
-    })
-  })
-  .catch(err => console.log(err))
-
-export { changeAvatar, patchRequestPrifile }
 
 
