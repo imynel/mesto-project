@@ -105,4 +105,3 @@ formElementCards.addEventListener('submit', handleFormSubmitCards)
 
 formElementProfile.addEventListener('submit', handleFormSubmitProfile)
 formElementAvatar.addEventListener('submit', handleFormSubmitAvatar)
-
