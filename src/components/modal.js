@@ -14,7 +14,6 @@ function closePopup(popup) {
 }
 
 function closeByEsc(evt) {
-  debugger
   if (evt.key === "Escape") {
       const openedPopup = document.querySelector(".popup_opened")
       closePopup(openedPopup)
@@ -22,7 +21,6 @@ function closeByEsc(evt) {
 }
 
 function closeByOverlayClick(evt) {
-  debugger
   if (evt.target.classList.contains('popup_opened')) {
     const openedPopup = document.querySelector(".popup_opened")
     closePopup(openedPopup)

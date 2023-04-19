@@ -9,6 +9,10 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imynel/mesto-project.git"
+  },
   "author": "imynel",
   "license": "ISC",
   "devDependencies": {
