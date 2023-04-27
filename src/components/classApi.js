@@ -58,7 +58,7 @@ export default class Api {
   }
 
   // ЗАПРОС НА ДОБАВЛЕНИЯ ЛАЙКА
-  deleteRequestCardsLikesID(id) {
+  putRequestCardsLikesID(id) {
     return fetch(`${this.baseUrl}/cards/likes/${id}`, {
       method: 'PUT',
       headers: this.headers
@@ -67,14 +67,24 @@ export default class Api {
   }
 
   // ЗАПРОС НА УДАЛЕНИЕ КАРТОЧКИ
-  deleteRequestCard = (id) => {
+  deleteRequestCard(id) {
     return fetch(`${this.baseUrl}/cards/${id}`, {
       method: 'DELETE',
       headers: this.headers
     })
-    .then(this._getResponsData)
-}
+            .then(this._getResponsData)
+  }
 
+  changeAvatar(link) {
+    return fetch(`${this.baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify({
+        avatar: link
+      })
+    })
+            .then(this._getResponsData(res))
+  }
 
   _getResponsData = res => {
     if(res.ok) return res.json()
