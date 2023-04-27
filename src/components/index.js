@@ -31,13 +31,6 @@ import {
 } from './consts.js'
 
 
-// function addCards() {
-//   initialCards.forEach(element => {
-//     const card = createCard(element.name, element.link)
-//     renderCard(card, sectionCards)
-//   })
-// }
-// addCards()
 
 
 
