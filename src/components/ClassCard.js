@@ -1,10 +1,12 @@
 import { buttonClosePopupImage } from './consts.js'
 
 export default class Card {
-  constructor( {title, link}, templateSelector) {
+  constructor({item}, {title, link}, templateSelector) {
     this.title = title
     this.link = link
     this.templateSelector = templateSelector
+    this.owner = item.owner
+    // this.trash = item.trash
   }
 
   _getElement() {
@@ -16,9 +18,16 @@ export default class Card {
     this._element = this._getElement()
     this._setEventListeners()
 
+    const heartCard = this._element.querySelector('.card__heart')
+    const countLikes = this._element.querySelector('.card__count-heart')
+    this.trash = this._element.querySelector('.card__trash')
+
     this._element.querySelector('.card__heading').textContent = this.title
     this._element.querySelector('.card__image').src = this.link
     this._element.querySelector('.card__image').alt = this.title
+
+    if(this._element.o)
+
 
     return this._element
   }
