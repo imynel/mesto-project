@@ -57,6 +57,23 @@ export default class Api {
             .then(this._getResponsData)
   }
 
+  // ЗАПРОС НА ДОБАВЛЕНИЯ ЛАЙКА
+  deleteRequestCardsLikesID(id) {
+    return fetch(`${this.baseUrl}/cards/likes/${id}`, {
+      method: 'PUT',
+      headers: this.headers
+    })
+            .then(this._getResponsData)
+  }
+
+  // ЗАПРОС НА УДАЛЕНИЕ КАРТОЧКИ
+  deleteRequestCard = (id) => {
+    return fetch(`${this.baseUrl}/cards/${id}`, {
+      method: 'DELETE',
+      headers: this.headers
+    })
+    .then(this._getResponsData)
+}
 
 
   _getResponsData = res => {
