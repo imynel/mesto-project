@@ -31,13 +31,6 @@ import {
 } from './consts.js'
 import Api from './classApi.js';
 
-// function addCards() {
-//   initialCards.forEach(element => {
-//     const card = createCard(element.name, element.link)
-//     renderCard(card, sectionCards)
-//   })
-// }
-// addCards()
 
 const api = new Api ({
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-22',
