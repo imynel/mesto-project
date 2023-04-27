@@ -48,7 +48,7 @@ const api = new Api ({
 })
 
 api.getInitialCards()
-
+api.getResponsInfo()
 
 Promise.all([getRequestUsersMe(), getRequestCards()])
   .then(([info, cards]) => {
