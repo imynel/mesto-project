@@ -4,6 +4,7 @@ export default class Api {
     this.headers = options.headers
   }
 
+// ЗАПРОС ДЛЯ ИНФОРМАЦИИ О КАРТОЧКАХ
   getInitialCards() {
     return fetch(`${this.baseUrl}/cards`, {
       headers: this.headers
@@ -12,6 +13,7 @@ export default class Api {
             .then(data => console.log(data))
   }
 
+  // ЗАПРОС ДЛЯ ИНФОРМАЦИИ О ЮЗЕРЕ
   getResponsInfo() {
     return fetch(`${this.baseUrl}/users/me`, {
       headers: this.headers
@@ -20,6 +22,7 @@ export default class Api {
             .then(data => console.log(data))
   }
 
+  // ЗАПРОС ДЛЯ ОБНОВЛЕНИЯ ИНФОРМАЦИИ ПРОФИЛЯ
   patchRequestPrifile(nameProfile, aboutProfile) {
     return fetch(`${this.baseUrl}/users/me`, {
       method: 'PATCH',
@@ -32,6 +35,27 @@ export default class Api {
             .then(this._getResponsData)
   }
 
+  //ЗАПРОС НА ДОБАВЛЕНИЕ КАРТОЧЕК
+  gitInitialCards(place, link) {
+    return fetch(`${this.baseUrl}/cards`, {
+      headers: this.headers,
+      method: 'POST',
+      body: JSON.stringify({
+        name: place,
+        link: link,
+      })
+  })
+            .then(this._getResponsData)
+  }
+
+  //ЗАПРОС НА УДАЛЕНИЕ ЛАЙКА
+  deleteRequestCardId(id) {
+    return fetch(`${this.baseUrl}/cards/likes/${id}`, {
+      method: 'DELETE',
+      headers: this.headers
+  })
+            .then(this._getResponsData)
+  }
 
 
 
