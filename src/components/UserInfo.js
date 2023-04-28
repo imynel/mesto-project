@@ -1,25 +1,25 @@
-import { getRequestUsersMe } from './api.js'
-
+import Api from "./classApi.js"
 // Создание класса UserInfo
-export default class UserInfo {
-  constructor(name, about, avatar){
+export default class UserInfo extends Api{
+  constructor(name, about, options){
+    super(options)
     this._name = name
     this._about = about
-    this._avatar = avatar
   }
 
   getUserInfo() {
-    getRequestUsersMe()
-      .then(data => {
-        console.log(data)
-        return data
-      })
+    this.getResponsInfo()
+    // getRequestUsersMe()
+    //   .then(data => {
+    //     console.log(data)
+    //     return data
+    //   })
   }
 
-  setUserInfo(user) {
-    this._name.textContent = user.name
-    this._about.textContent = user.about
-    this._avatar.src = user.avatar
+  setUserInfo(nameValue, aboutValue) {
+    this.patchRequestPrifile(nameValue, aboutValue)
+    this._name.textContent = nameValue
+    this._about.textContent = aboutValue
   }
 }
 

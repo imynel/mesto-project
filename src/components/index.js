@@ -30,6 +30,8 @@ import {
   id,
 } from './consts.js'
 import Api from './classApi.js';
+import UserInfo from './UserInfo.js';
+
 
 
 const api = new Api ({
@@ -39,9 +41,6 @@ const api = new Api ({
     'Content-Type': 'application/json'
   }
 })
-
-api.getInitialCards()
-api.getResponsInfo()
 
 Promise.all([getRequestUsersMe(), getRequestCards()])
   .then(([info, cards]) => {
