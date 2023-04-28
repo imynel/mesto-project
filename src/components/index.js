@@ -29,7 +29,7 @@ import {
   avatarImage,
   id,
 } from './consts.js'
-
+import Api from './classApi.js';
 
 // function addCards() {
 //   initialCards.forEach(element => {
@@ -39,8 +39,16 @@ import {
 // }
 // addCards()
 
+const api = new Api ({
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-22',
+  headers: {
+    authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a',
+    'Content-Type': 'application/json'
+  }
+})
 
-
+api.getInitialCards()
+api.getResponsInfo()
 
 Promise.all([getRequestUsersMe(), getRequestCards()])
   .then(([info, cards]) => {
