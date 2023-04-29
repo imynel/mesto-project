@@ -1,7 +1,11 @@
 import { buttonClosePopupImage } from './consts.js'
 
 export default class Card {
+<<<<<<< HEAD
   constructor({card, user,title, link}, templateSelector) {
+=======
+  constructor({item}, {title, link}, templateSelector) {
+>>>>>>> e56a2e18b52750d13d4fad0fa2bd557d0f711ae1
     this.title = title
     this.link = link
     this.templateSelector = templateSelector
@@ -26,6 +30,7 @@ export default class Card {
     this._element.querySelector('.card__image').src = this.link
     this._element.querySelector('.card__image').alt = this.title
 
+<<<<<<< HEAD
     //удаление мусорки у чужих карточек
     if(this.card.owner._id !== this.user) {
       this.trash.remove()
@@ -36,6 +41,10 @@ export default class Card {
 
     //установка количества лайков
     this._setLikes(card.likes, countLikes)
+=======
+    if(this._element.o)
+
+>>>>>>> e56a2e18b52750d13d4fad0fa2bd557d0f711ae1
 
     return this._element
   }
@@ -52,6 +61,7 @@ export default class Card {
     popup.classList.remove('popup_opened')
   }
 
+<<<<<<< HEAD
   _myLike(likes, button) {
     likes.forEach(element => {
       if (element._id === user._id) {
@@ -67,6 +77,8 @@ export default class Card {
     else number.textContent = '0'
   }
 
+=======
+>>>>>>> e56a2e18b52750d13d4fad0fa2bd557d0f711ae1
   _setEventListeners() {
     this._element.addEventListener('click', () => {
       this._handleOpenPopup()
