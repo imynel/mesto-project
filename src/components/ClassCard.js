@@ -1,12 +1,13 @@
 import { buttonClosePopupImage } from './consts.js'
 
 export default class Card {
-  constructor({card, user,title, link}, templateSelector) {
+  constructor({card, user, title, link}, templateSelector) {
     this.title = title
     this.link = link
     this.templateSelector = templateSelector
     this.owner = item.owner
-    // this.trash = item.trash
+    this.user = user
+    this.card = card
   }
 
   _getElement() {
@@ -40,7 +41,7 @@ export default class Card {
     return this._element
   }
 
-  _handleOpenPopup() {
+  _handleCardClick() {
     imagePopup.src = cardInfo.src
     imagePopup.alt = popupTitle.textContent
     popup.classList.add('popup_opened')
@@ -66,6 +67,11 @@ export default class Card {
     }
     else number.textContent = '0'
   }
+
+  _deleteCard() {
+    this._element.remove()
+  }
+
 
   _setEventListeners() {
     this._element.addEventListener('click', () => {
