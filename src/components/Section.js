@@ -1,8 +1,8 @@
 export default class Section {
-    constructor({item, renderer}, containerSelector) {
-        this.rendererItems = item
-        this.renderer = renderer
-        this.container = document.querySelector(containerSelector)
+    constructor({data, renderer}, containerSelector) {
+        this._rendererItems = data
+        this._renderer = renderer
+        this._container = document.querySelector(containerSelector)
     }
 
     addItem(element) {
@@ -10,6 +10,8 @@ export default class Section {
     }
 
     rendererElement() {
-        // ПОКА НЕ ЗНАЮ, ЧТО СЮДА ВСТАВИТЬ
+        this._rendererItems.forEach(item => {
+          this._renderer(item)
+        })
     }
 }
