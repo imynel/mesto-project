@@ -32,6 +32,7 @@ import {
 import Api from './classApi.js';
 import UserInfo from './UserInfo';
 import FormValidator from './FormValidator';
+import Section from './Section';
 
 
 const api = new Api ({
@@ -45,10 +46,16 @@ const api = new Api ({
 
 
 const userInfo = new UserInfo(nameProfile,jobProfile, avatarImage);
-// userInfo.getUserInfo(api.getResponsInfo());
+const section = new Section({renderer:(card) => {
+  const newItem = addNewCard(card);
+  return newItem;
+}
+}, sectionCards)
+
 Promise.all([api.getInitialCards(), api.getResponsInfo()])
-  .then(([card, user]) => {
+  .then(([cards, user]) => {
     userInfo.setUserInfo(user)
+    section.rendererElement(cards)
   })
 
 

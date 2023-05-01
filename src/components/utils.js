@@ -20,25 +20,8 @@ import UserInfo from './UserInfo.js';
 
 function handleFormSubmitProfile(evt) {
   evt.preventDefault()
-<<<<<<< HEAD
-  debugger
-  const user = new UserInfo(nameProfile, jobProfile, avatarImage)
-  debugger
-  console.log(user.getUserInfo())
-  user.setUserInfo(user.getUserInfo())
-=======
-  const userInfo = new UserInfo (nameProfile, jobProfile, {
-    baseUrl: 'https://nomoreparties.co/v1/plus-cohort-22',
-    headers: {
-      authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a',
-      'Content-Type': 'application/json'
-    }
-  })
-  
-  userInfo.setUserInfo(nameInput.value, jobInput.value)
 
   closePopup(popupProfile)
->>>>>>> b08ddca79451fedcc70f0351a2a05b9364948163
   // renderLoading(true, evt)
   // patchRequestPrifile(nameInput.value, jobInput.value)
   //   .then(data => {
