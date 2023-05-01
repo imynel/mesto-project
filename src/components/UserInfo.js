@@ -1,5 +1,3 @@
-import { getRequestUsersMe } from './api.js'
-
 // Создание класса UserInfo
 export default class UserInfo {
   constructor(name, about, avatar){
