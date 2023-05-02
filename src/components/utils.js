@@ -16,15 +16,11 @@ import {
     nameProfile,
     jobProfile,
 } from './consts.js'
-import UserInfo from './UserInfo.js';
+
 
 function handleFormSubmitProfile(evt) {
   evt.preventDefault()
-  debugger
-  const user = new UserInfo(nameProfile, jobProfile, avatarImage)
-  debugger
-  console.log(user.getUserInfo())
-  user.setUserInfo(user.getUserInfo())
+
   // renderLoading(true, evt)
   // patchRequestPrifile(nameInput.value, jobInput.value)
   //   .then(data => {

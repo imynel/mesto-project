@@ -1,5 +1,3 @@
-import { getRequestUsersMe } from './api.js'
-
 // Создание класса UserInfo
 export default class UserInfo {
   constructor(name, about, avatar){
@@ -8,18 +6,19 @@ export default class UserInfo {
     this._avatar = avatar
   }
 
-  getUserInfo() {
-    getRequestUsersMe()
-      .then(data => {
-        console.log(data)
-        return data
-      })
+  getUserInfo(data) {
+    return {
+      name: data.name,
+      about: data.about,
+      avatar: data.avatar,
+    }
   }
 
-  setUserInfo(user) {
-    this._name.textContent = user.name
-    this._about.textContent = user.about
-    this._avatar.src = user.avatar
+   setUserInfo = (data) => {
+    if (data.name) this._name.textContent = data.name
+    if (data.about) this._about.textContent = data.about
+    if (data.avatar) this._avatar.src = data.avatar
+    if (data._id) this._userId = data._id
   }
 }
 

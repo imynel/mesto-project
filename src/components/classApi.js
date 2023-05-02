@@ -10,7 +10,6 @@ export default class Api {
       headers: this.headers
     })
             .then(this._getResponsData)
-            .then(data => console.log(data))
   }
 
   // ЗАПРОС ДЛЯ ИНФОРМАЦИИ О ЮЗЕРЕ
@@ -19,7 +18,6 @@ export default class Api {
       headers: this.headers
     })
             .then(this._getResponsData)
-            .then(data => console.log(data))
   }
 
   // ЗАПРОС ДЛЯ ОБНОВЛЕНИЯ ИНФОРМАЦИИ ПРОФИЛЯ

@@ -30,6 +30,8 @@ import {
   id,
 } from './consts.js'
 import Api from './classApi.js';
+import UserInfo from './UserInfo';
+import FormValidator from './FormValidator';
 
 
 const api = new Api ({
@@ -40,22 +42,29 @@ const api = new Api ({
   }
 })
 
-api.getInitialCards()
-api.getResponsInfo()
 
-Promise.all([getRequestUsersMe(), getRequestCards()])
-  .then(([info, cards]) => {
-    nameProfile.textContent = info.name
-    jobProfile.textContent = info.about
-    avatarImage.src = info.avatar
-    id.id = info._id
-    console.log(id)
-    cards.forEach(element => {
-      const cardElemnt = createCard(element)
-      renderCard(cardElemnt, sectionCards)
-    })
+
+const userInfo = new UserInfo(nameProfile,jobProfile, avatarImage);
+// userInfo.getUserInfo(api.getResponsInfo());
+Promise.all([api.getInitialCards(), api.getResponsInfo()])
+  .then(([card, user]) => {
+    userInfo.setUserInfo(user)
   })
-  .catch(err => console.log(err))
+
+
+
+// Promise.all([getRequestUsersMe(), getRequestCards()])
+//   .then(([info, cards]) => {
+//     nameProfile.textContent = info.name
+//     jobProfile.textContent = info.about
+//     avatarImage.src = info.avatar
+//     id.id = info._id
+//     cards.forEach(element => {
+//       const cardElemnt = createCard(element)
+//       renderCard(cardElemnt, sectionCards)
+//     })
+//   })
+//   .catch(err => console.log(err))
 
 
 enableValidation({
