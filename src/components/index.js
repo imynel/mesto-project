@@ -28,11 +28,13 @@ import {
   sectionCards,
   avatarImage,
   id,
+  templateSelector,
 } from './consts.js'
 import Api from './classApi.js';
-import UserInfo from './UserInfo';
-import FormValidator from './FormValidator';
-import Section from './Section';
+import UserInfo from './UserInfo.js';
+import FormValidator from './FormValidator.js';
+import Section from './Section.js';
+import Card from "./ClassCard.js"
 
 
 const api = new Api ({
@@ -43,24 +45,45 @@ const api = new Api ({
   }
 })
 
-// function addNewCard(
-//   const newCard = new
-// )
+function deleteCard(card, cardId) {
+  api.deleteRequestCard(cardId)
+    .then(() => {
+      card.remove()
+    })
+    .catch(err => console.log(`Ошибка - ${err.status}`))
+}
+
+// function () {
+
+// }
+
+const addNewCard = (card) => {
+  const newCard = new Card(card, userInfo._userId, templateSelector, {
+    // handleCardClick: handleOpenImage(),
+
+    deleteClickCard: deleteCard,
+
+    // deletelike: ,
+
+    // putLike: ,
+  })
+  return newCard.generate()
+}
 
 
 
 const userInfo = new UserInfo(nameProfile,jobProfile, avatarImage);
-// const section = new Section({
-//   renderer: (card) => {
-//     const newItem = addNewCard(card);
-//     return newItem;
-//   }
-// }, sectionCards)
+const section = new Section({
+  renderer: (card) => {
+    const newItem = addNewCard(card);
+    return newItem;
+  }
+}, sectionCards)
 
 Promise.all([api.getInitialCards(), api.getResponsInfo()])
   .then(([cards, user]) => {
     userInfo.setUserInfo(user)
-    // section.rendererElement(cards)
+    section.rendererElement(cards)
   })
 
 
