@@ -43,19 +43,24 @@ const api = new Api ({
   }
 })
 
+// function addNewCard(
+//   const newCard = new
+// )
+
 
 
 const userInfo = new UserInfo(nameProfile,jobProfile, avatarImage);
-const section = new Section({renderer:(card) => {
-  const newItem = addNewCard(card);
-  return newItem;
-}
-}, sectionCards)
+// const section = new Section({
+//   renderer: (card) => {
+//     const newItem = addNewCard(card);
+//     return newItem;
+//   }
+// }, sectionCards)
 
 Promise.all([api.getInitialCards(), api.getResponsInfo()])
   .then(([cards, user]) => {
     userInfo.setUserInfo(user)
-    section.rendererElement(cards)
+    // section.rendererElement(cards)
   })
 
 
