@@ -33,23 +33,23 @@ function handleFormSubmitProfile(evt) {
   //   .finally(() => renderLoading(false, evt))
 }
 
-function handleFormSubmitCards(evt) {
-  evt.preventDefault()
-  renderLoading(true, evt)
-  gitInitialCards(placeInput.value, linkInput.value)
-  .then(item => {
-    const card = createCard(item);
-    renderCard(card, sectionCards);
-    closePopup(popupCards)
-    buttonCard.disabled = true
-    buttonCard.classList.add('form__submit_inactive')
-    placeInput.value = ''
-    linkInput.value = ''
-  })
-  .catch(err => console.log(`Ошибка: - ${err.status}`))
+// function handleFormSubmitCards(evt) {
+//   evt.preventDefault()
+//   renderLoading(true, evt)
+//   gitInitialCards(placeInput.value, linkInput.value)
+//   .then(item => {
+//     const card = createCard(item);
+//     renderCard(card, sectionCards);
+//     closePopup(popupCards)
+//     buttonCard.disabled = true
+//     buttonCard.classList.add('form__submit_inactive')
+//     placeInput.value = ''
+//     linkInput.value = ''
+//   })
+//   .catch(err => console.log(`Ошибка: - ${err.status}`))
 
-  .finally(() => renderLoading(false, evt))
-  }
+//   .finally(() => renderLoading(false, evt))
+//   }
 
 function handleFormSubmitAvatar(evt) {
   evt.preventDefault()
@@ -66,7 +66,7 @@ function handleFormSubmitAvatar(evt) {
   .finally(() => renderLoading(false, evt))
 }
 
-export {handleFormSubmitProfile, handleFormSubmitCards, handleFormSubmitAvatar}
+export {handleFormSubmitProfile, handleFormSubmitAvatar}
 
 
 // const logo = new URL('../images/logo/logo.svg', import.meta.url)

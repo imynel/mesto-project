@@ -34,7 +34,7 @@ export default class Api {
   }
 
   //ЗАПРОС НА ДОБАВЛЕНИЕ КАРТОЧЕК
-  gitInitialCards(place, link) {
+  gitInitialCards({place, link}) {
     return fetch(`${this.baseUrl}/cards`, {
       headers: this.headers,
       method: 'POST',

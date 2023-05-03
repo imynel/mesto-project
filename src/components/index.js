@@ -34,7 +34,9 @@ import Api from './classApi.js';
 import UserInfo from './UserInfo.js';
 import FormValidator from './FormValidator.js';
 import Section from './Section.js';
-import Card from "./ClassCard.js"
+import Card from "./ClassCard.js";
+import PopupWithForm from './PopupWithForm.js'
+import PopupWithImage from './PopupWithImage.js'
 
 //создаем экземпляр апи, потом вызываем его с нужными методами
 const api = new Api ({
@@ -44,6 +46,16 @@ const api = new Api ({
     'Content-Type': 'application/json'
   }
 })
+
+const popupCard = new PopupWithForm({
+  popup: popupCards,
+  callback: () => {
+    // renderer()
+    api.gitInitialCards()
+  }
+})
+
+popupCard.setEventListeners()
 
 //удаление карточки с апи
 function deleteCard(card, cardId) {
@@ -115,14 +127,14 @@ Promise.all([api.getInitialCards(), api.getResponsInfo()])
 //   .catch(err => console.log(err))
 
 
-enableValidation({
-  formSelector: '.form',
-  inputSelector: '.form-input',
-  submitButtonSelector: '.form__submit',
-  inactiveButtonClass: 'form__submit_inactive',
-  inputErrorClass: 'form__input_type-error',
-  errorClass: 'form__input-error_active',
-});
+// enableValidation({
+//   formSelector: '.form',
+//   inputSelector: '.form-input',
+//   submitButtonSelector: '.form__submit',
+//   inactiveButtonClass: 'form__submit_inactive',
+//   inputErrorClass: 'form__input_type-error',
+//   errorClass: 'form__input-error_active',
+// });
 
 // слушатели
 buttonOpenPopupProfile.addEventListener('click', () => {
@@ -159,6 +171,6 @@ buttonClosePopupAvatar.addEventListener('click', () => {
   closePopup(popupAvatar)
 })
 
-formElementCards.addEventListener('submit', handleFormSubmitCards)
+// formElementCards.addEventListener('submit', handleFormSubmitCards)
 formElementProfile.addEventListener('submit', handleFormSubmitProfile)
 formElementAvatar.addEventListener('submit', handleFormSubmitAvatar)
