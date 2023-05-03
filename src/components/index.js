@@ -36,7 +36,7 @@ import FormValidator from './FormValidator.js';
 import Section from './Section.js';
 import Card from "./ClassCard.js"
 
-
+//создаем экземпляр апи, потом вызываем его с нужными методами
 const api = new Api ({
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-22',
   headers: {
@@ -45,6 +45,7 @@ const api = new Api ({
   }
 })
 
+//удаление карточки с апи
 function deleteCard(card, cardId) {
   api.deleteRequestCard(cardId)
     .then(() => {
@@ -52,30 +53,30 @@ function deleteCard(card, cardId) {
     })
     .catch(err => console.log(`Ошибка - ${err.status}`))
 }
+
+//удаление лайка с апи
 function deleteLike(id,button, likeCounter) {
   api.deleteRequestCardId(id)
     .then((res) => {
       button.classList.remove('card__heart_active')
-      likeCounter.textContent = res.likes.lenght
+      likeCounter.textContent = res.likes.length
     })
 }
 
+//установка лайка с апи
 function putLike(id,button, likeCounter) {
   api.putRequestCardsLikesID(id)
     .then((res) => {
       button.classList.add('card__heart_active')
-      likeCounter.textContent = res.likes.lenght
+      likeCounter.textContent = res.likes.length
     })
 }
 
 function addNewCard (card, id) {
   const newCard = new Card(card, userInfo._userId, templateSelector, {
     // handleCardClick: handleOpenImage,
-
-    deleteClickCard: deleteCard,
-
+    removeCard: deleteCard,
     deleteHandle: deleteLike,
-
     putHandle: putLike,
   })
   const cardElement = newCard.generate();

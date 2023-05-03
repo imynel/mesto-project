@@ -86,7 +86,7 @@ export default class Api {
 
   _getResponsData = res => {
     if(res.ok) return res.json()
-    return Promise.reject(err => console.log(`Ошибка - ${err.status}`))
+    return Promise.reject(err => console.log(`Ошибка - ${err}`))
   }
 }
 
