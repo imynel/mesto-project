@@ -52,22 +52,34 @@ function deleteCard(card, cardId) {
     })
     .catch(err => console.log(`Ошибка - ${err.status}`))
 }
+function deleteLike(id,button, likeCounter) {
+  api.deleteRequestCardId(id)
+    .then((res) => {
+      button.classList.remove('card__heart_active')
+      likeCounter.textContent = res.likes.lenght
+    })
+}
 
-// function () {
+function putLike(id,button, likeCounter) {
+  api.putRequestCardsLikesID(id)
+    .then((res) => {
+      button.classList.add('card__heart_active')
+      likeCounter.textContent = res.likes.lenght
+    })
+}
 
-// }
-
-const addNewCard = (card) => {
+function addNewCard (card, id) {
   const newCard = new Card(card, userInfo._userId, templateSelector, {
-    // handleCardClick: handleOpenImage(),
+    // handleCardClick: handleOpenImage,
 
     deleteClickCard: deleteCard,
 
-    // deletelike: ,
+    deleteHandle: deleteLike,
 
-    // putLike: ,
+    putHandle: putLike,
   })
-  return newCard.generate()
+  const cardElement = newCard.generate();
+  return cardElement
 }
 
 
@@ -83,7 +95,7 @@ const section = new Section({
 Promise.all([api.getInitialCards(), api.getResponsInfo()])
   .then(([cards, user]) => {
     userInfo.setUserInfo(user)
-    section.rendererElement(cards)
+    section.rendererElement(cards, user._id)
   })
 
 
