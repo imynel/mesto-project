@@ -35,20 +35,20 @@ function handleFormSubmitProfile(evt) {
 
 function handleFormSubmitCards(evt) {
   evt.preventDefault()
-  renderLoading(true, evt)
-  gitInitialCards(placeInput.value, linkInput.value)
-  .then(item => {
-    const card = createCard(item);
-    renderCard(card, sectionCards);
-    closePopup(popupCards)
-    buttonCard.disabled = true
-    buttonCard.classList.add('form__submit_inactive')
-    placeInput.value = ''
-    linkInput.value = ''
-  })
-  .catch(err => console.log(`Ошибка: - ${err.status}`))
+  // renderLoading(true, evt)
+  // gitInitialCards(placeInput.value, linkInput.value)
+  // .then(item => {
+  //   const card = createCard(item);
+  //   renderCard(card, sectionCards);
+  //   closePopup(popupCards)
+  //   buttonCard.disabled = true
+  //   buttonCard.classList.add('form__submit_inactive')
+  //   placeInput.value = ''
+  //   linkInput.value = ''
+  // })
+  // .catch(err => console.log(`Ошибка: - ${err.status}`))
 
-  .finally(() => renderLoading(false, evt))
+  // .finally(() => renderLoading(false, evt))
   }
 
 function handleFormSubmitAvatar(evt) {
