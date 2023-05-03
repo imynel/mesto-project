@@ -34,12 +34,12 @@ export default class Api {
   }
 
   //ЗАПРОС НА ДОБАВЛЕНИЕ КАРТОЧЕК
-  gitInitialCards({place, link}) {
+  gitInitialCards({name, link}) {
     return fetch(`${this.baseUrl}/cards`, {
-      headers: this.headers,
       method: 'POST',
+      headers: this.headers,
       body: JSON.stringify({
-        name: place,
+        name: name,
         link: link,
       })
   })

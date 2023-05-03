@@ -18,6 +18,7 @@ const imagePopup = popupImage.querySelector('.popup-image__image')
 const popupTitle = popupImage.querySelector('.popup-image__title')
 const buttonAvatar = document.querySelector('.avatar__button')
 const avatarImage = document.querySelector('.profile__image')
+const formCard = document.getElementsByName('#form-profile')
 // Для открытия и закрытия попапа
 const buttonOpenPopupProfile = document.querySelector('.profile__button') // для открытия кнопки редактирования
 const buttonOpenPopupCard = document.querySelector('.profile__add-button') // для открытия попапа добавления карточек
@@ -29,6 +30,15 @@ const templateSelector = '#card'
 const buttonSaveAvatar = popupAvatar.querySelector('.popup__button')
 const id = []
 const popups = document.querySelectorAll('.popup')
+const settings = {
+    formSelector: '.form',
+  inputSelector: '.form-input',
+  submitButtonSelector: '.form__submit',
+  inactiveButtonClass: 'form__submit_inactive',
+  inputErrorClass: 'form__input_type-error',
+  errorClass: 'form__input-error_active',
+}
+
 
 const initialCards = [
     {
@@ -89,5 +99,7 @@ export {
     avatarInput,
     avatarImage,
     id,
-    popups
+    popups,
+    settings,
+    formCard
 }

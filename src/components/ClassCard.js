@@ -2,11 +2,11 @@ import { buttonClosePopupImage } from './consts.js'
 
 //создаем класс карточки
 export default class Card {
-  constructor(card, user, templateSelector, {removeCard, deleteHandle, putHandle}) {
+  constructor(card, user, templateSelector, {removeCard, handleCardClick, deleteHandle, putHandle}) {
     this._card = card
     this._user = user
     this._templateSelector = templateSelector
-    // this.openImage = handleCardClick
+    this._openImage = handleCardClick
     this._deleteCardHandle = removeCard
     this._deleteLikeHandle = deleteHandle
     this._putLikeHandle = putHandle
@@ -44,34 +44,19 @@ export default class Card {
     }
   }
 
-  _handleCardClick() {
-    imagePopup.src = cardInfo.src
-    imagePopup.alt = popupTitle.textContent
-    popup.classList.add('popup_opened')
-  }
-
-  _handleClosePopup() {
-    imagePopup.src = ''
-    imagePopup.alt = ''
-    popup.classList.remove('popup_opened')
-  }
-
   _setEventListeners() {
 
     //обработчик удаления карточки
     this._trash.addEventListener('click', () => this._deleteCardHandle(this._element, this._card._id))
 
-    //открытие полномасштабного изображения
-    // this._element.addEventListener('click', () => {
-    //   this._handleCardClick()
-    // })
-
+    this._imageBig.addEventListener("click", () => {
+      this._openImage({
+        imageSrc: this._card.link,
+        text: this._card.name,
+      });
+    })
     //установка или удаление лайка
     this._heartCard.addEventListener('click',() => this._setLikes())
-
-    buttonClosePopupImage.addEventListener('click', () => {
-      this._handleClosePopup()
-    })
   }
 
 //создаем элемент карточки из темплейта
@@ -80,6 +65,7 @@ export default class Card {
     this._heartCard = this._element.querySelector('.card__heart')
     this._countLikes = this._element.querySelector('.card__count-heart')
     this._trash = this._element.querySelector('.card__trash')
+    this._imageBig = this._element.querySelector('.card__image')
     this._element.querySelector('.card__heading').textContent = this._card.name
     this._element.querySelector('.card__image').src = this._card.link
     this._element.querySelector('.card__image').alt = this.name
@@ -90,6 +76,8 @@ export default class Card {
     if(this._card.owner._id !== this._user) {
       this._trash.remove()
     }
+    this._imageBig.src = this._card.link;
+    this._imageBig.alt = this._card.name;
     this._countLikes.textContent = this._likes
 
     this._isMyLike()

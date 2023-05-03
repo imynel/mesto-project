@@ -29,6 +29,8 @@ import {
   avatarImage,
   id,
   templateSelector,
+  settings,
+  formCard
 } from './consts.js'
 import Api from './classApi.js';
 import UserInfo from './UserInfo.js';
@@ -47,55 +49,7 @@ const api = new Api ({
   }
 })
 
-const popupCard = new PopupWithForm({
-  popup: popupCards,
-  callback: () => {
-    // renderer()
-    api.gitInitialCards()
-  }
-})
-
-popupCard.setEventListeners()
-
-//удаление карточки с апи
-function deleteCard(card, cardId) {
-  api.deleteRequestCard(cardId)
-    .then(() => {
-      card.remove()
-    })
-    .catch(err => console.log(`Ошибка - ${err.status}`))
-}
-
-//удаление лайка с апи
-function deleteLike(id,button, likeCounter) {
-  api.deleteRequestCardId(id)
-    .then((res) => {
-      button.classList.remove('card__heart_active')
-      likeCounter.textContent = res.likes.length
-    })
-}
-
-//установка лайка с апи
-function putLike(id,button, likeCounter) {
-  api.putRequestCardsLikesID(id)
-    .then((res) => {
-      button.classList.add('card__heart_active')
-      likeCounter.textContent = res.likes.length
-    })
-}
-
-function addNewCard (card, id) {
-  const newCard = new Card(card, userInfo._userId, templateSelector, {
-    // handleCardClick: handleOpenImage,
-    removeCard: deleteCard,
-    deleteHandle: deleteLike,
-    putHandle: putLike,
-  })
-  const cardElement = newCard.generate();
-  return cardElement
-}
-
-
+const cardValidation = new FormValidator(settings, document.querySelector('#form-cards'))
 
 const userInfo = new UserInfo(nameProfile,jobProfile, avatarImage);
 const section = new Section({
@@ -105,30 +59,93 @@ const section = new Section({
   }
 }, sectionCards)
 
+const imagePopup = new PopupWithImage("popup-image", "popup_opened");
+
+const popupCard = new PopupWithForm('popup-cards', 'popup_opened', (values) =>
+  {
+  const data = {};
+  data.name = values.name;
+  data.link = values.url;
+    api.gitInitialCards(data)
+      .then(res => {
+        section.addItem(addNewCard(res, userInfo._userId))
+      })
+  }
+)
+
+
+//удаление карточки с апи
+function deleteCard(card, cardId) {
+  api.deleteRequestCard(cardId)
+  .then(() => {
+    card.remove()
+  })
+  .catch(err => console.log(`Ошибка - ${err.status}`))
+}
+
+//удаление лайка с апи
+function deleteLike(id,button, likeCounter) {
+  api.deleteRequestCardId(id)
+  .then((res) => {
+    button.classList.remove('card__heart_active')
+    likeCounter.textContent = res.likes.length
+  })
+}
+
+//установка лайка с апи
+function putLike(id,button, likeCounter) {
+  api.putRequestCardsLikesID(id)
+  .then((res) => {
+    button.classList.add('card__heart_active')
+    likeCounter.textContent = res.likes.length
+  })
+}
+
+function addNewCard (card, id) {
+  const newCard = new Card(card, userInfo._userId, templateSelector, {
+    handleCardClick: (link, name) => {
+      imagePopup.open(link, name)
+    },
+    removeCard: deleteCard,
+    deleteHandle: deleteLike,
+    putHandle: putLike,
+  })
+  const cardElement = newCard.generate();
+  return cardElement
+}
+
+cardValidation.enableValidation()
+
+imagePopup.setEventListeners()
+popupCard.setEventListeners()
+
+
+
+
 Promise.all([api.getInitialCards(), api.getResponsInfo()])
-  .then(([cards, user]) => {
+.then(([cards, user]) => {
     userInfo.setUserInfo(user)
     section.rendererElement(cards, user._id)
   })
 
 
 
-// Promise.all([getRequestUsersMe(), getRequestCards()])
-//   .then(([info, cards]) => {
-//     nameProfile.textContent = info.name
-//     jobProfile.textContent = info.about
-//     avatarImage.src = info.avatar
-//     id.id = info._id
-//     cards.forEach(element => {
-//       const cardElemnt = createCard(element)
-//       renderCard(cardElemnt, sectionCards)
-//     })
-//   })
-//   .catch(err => console.log(err))
+  // Promise.all([getRequestUsersMe(), getRequestCards()])
+  //   .then(([info, cards]) => {
+    //     nameProfile.textContent = info.name
+    //     jobProfile.textContent = info.about
+    //     avatarImage.src = info.avatar
+    //     id.id = info._id
+    //     cards.forEach(element => {
+      //       const cardElemnt = createCard(element)
+  //       renderCard(cardElemnt, sectionCards)
+  //     })
+  //   })
+  //   .catch(err => console.log(err))
 
 
-// enableValidation({
-//   formSelector: '.form',
+  // enableValidation({
+    //   formSelector: '.form',
 //   inputSelector: '.form-input',
 //   submitButtonSelector: '.form__submit',
 //   inactiveButtonClass: 'form__submit_inactive',
