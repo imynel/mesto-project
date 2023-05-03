@@ -21,14 +21,14 @@ export default class Api {
   }
 
   // ЗАПРОС ДЛЯ ОБНОВЛЕНИЯ ИНФОРМАЦИИ ПРОФИЛЯ
-  patchRequestPrifile(nameProfile, aboutProfile) {
+  patchRequestPrifile(user) {
     return fetch(`${this.baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this.headers,
       body: JSON.stringify({
-        name: nameProfile,
-        about: aboutProfile
-    })
+        name: user.name,
+        about: user.about
+      })
     })
             .then(this._getResponsData)
   }
@@ -73,12 +73,12 @@ export default class Api {
             .then(this._getResponsData)
   }
 
-  changeAvatar(link) {
+  changeAvatar(avatar) {
     return fetch(`${this.baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this.headers,
       body: JSON.stringify({
-        avatar: link
+        avatar: avatar.avatarlink
       })
     })
             .then(this._getResponsData(res))

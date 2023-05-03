@@ -35,16 +35,16 @@
       <p class="footer__text">&copy; 2020 Mesto Russia</p>
     </footer>
 
-    <section class="popup popup-profile">
+    <section class="popup popup-profile" id="popup-profile">
       <div class="popup__container">
         <button type="button" class="popup__close-button">
           <img src="<%=require('./images/logo/Close-Icon.svg')%>" alt="крест" class="popup__close-image">
         </button>
-        <form id="form-profile" name="form-profile" class=" form popup__form form__set">
+        <form id="form-profile" name="form-profile" class=" form popup__form form__set" id="form-profile">
           <h3 class="popup__heading">Редактировать профиль</h3>
-          <input id="name-input" class="popup__input name_input form-input" type="text" value="Жак-ив Кусто" name="your-name" minlength="2" maxlength="40" pattern="^[a-zA-Zа-яёА-ЯЁ\-\s]+" required placeholder="Ваше имя" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
+          <input id="name-input" class="popup__input name_input form-input" type="text" value="Жак-ив Кусто" name="yourname" minlength="2" maxlength="40" pattern="^[a-zA-Zа-яёА-ЯЁ\-\s]+" required placeholder="Ваше имя" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
           <span class="form__input-error name-input-error"></span>
-          <input id="job-input" class="popup__input job_input form-input" type="text" value="Исследователь окена" name="about-you" minlength="2" maxlength="200" pattern="^[a-zA-Zа-яёА-ЯЁ\-  \s]+$" required placeholder="Ваша работа" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
+          <input id="job-input" class="popup__input job_input form-input" type="text" value="Исследователь окена" name="aboutyou" minlength="2" maxlength="200" pattern="^[a-zA-Zа-яёА-ЯЁ\-  \s]+$" required placeholder="Ваша работа" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
           <span class="form__input-error job-input-error"></span>
           <button type="submit" data-value="Сохранение..." value="Сохранить" class="popup__button form__submit">Сохранить</button>
         </form>
@@ -58,9 +58,9 @@
         </button>
         <form name="form-profile" class="form popup__form form__set" id="form-cards">
           <h3 class="popup__heading">Новое место</h3>
-          <input id="title-input" class="popup__input name_place form-input" type="text" value="" placeholder="Название" minlength="2" maxlength="30" pattern="^[a-zA-Zа-яёА-ЯЁ\-\s]+$" required data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
+          <input id="title-input" class="popup__input name_place form-input" type="text" name="titleinput" value="" placeholder="Название" minlength="2" maxlength="30" pattern="^[a-zA-Zа-яёА-ЯЁ\-\s]+$" required data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
           <span class="form__input-error title-input-error"></span>
-          <input id="link-input" class="popup__input name_link form-input" type="url" value="" placeholder="Ссылка на картинку" minlength="2" required data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
+          <input id="link-input" class="popup__input name_link form-input" type="url" value="" name="linkinput" placeholder="Ссылка на картинку" minlength="2" required data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
           <span class="form__input-error link-input-error"></span>
           <button type="submit" data-value="Сохранение..." value="Сохранить" class="popup__button form__submit">Создать</button>
         </form>
@@ -82,9 +82,9 @@
         <button type="button" class="popup__close-button">
           <img src="<%=require('./images/logo/Close-Icon.svg')%>" alt="крест" class="popup__close-image">
         </button>
-        <form name="form-profile" class="form popup__form form__set">
+        <form name="form-profile" class="form popup__form form__set" id="form-avatar">
           <h3 class="popup__heading">Обновить аватар</h3>
-          <input id="link-input" class="popup__input avatar_input form-input" type="url" value="" placeholder="Ссылка на картинку" minlength="2" required>
+          <input id="link-input" class="popup__input avatar_input form-input" name="avatarlink" type="url" value="" placeholder="Ссылка на картинку" minlength="2" required>
           <span class="form__input-error link-input-error"></span>
           <button type="submit" data-value="Сохранение..." value="Сохранить" class="popup__button form__submit avatar__submit">Создать</button>
         </form>

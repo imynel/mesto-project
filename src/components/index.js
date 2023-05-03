@@ -50,6 +50,8 @@ const api = new Api ({
 })
 
 const cardValidation = new FormValidator(settings, document.querySelector('#form-cards'))
+const profileValidation = new FormValidator(settings, document.querySelector('#form-profile'))
+const avatarValidation = new FormValidator(settings, document.querySelector('#form-avatar'))
 
 const userInfo = new UserInfo(nameProfile,jobProfile, avatarImage);
 const section = new Section({
@@ -64,14 +66,35 @@ const imagePopup = new PopupWithImage("popup-image", "popup_opened");
 const popupCard = new PopupWithForm('popup-cards', 'popup_opened', (values) =>
   {
   const data = {};
-  data.name = values.name;
-  data.link = values.url;
+  data.name = values.titleinput
+  data.link = values.linkinput
+  console.log(data)
     api.gitInitialCards(data)
       .then(res => {
         section.addItem(addNewCard(res, userInfo._userId))
       })
   }
 )
+
+const popupInfo = new PopupWithForm('popup-profile', 'popup_opened', (values) =>
+  {
+  const data = {};
+  data.name = values.yourname
+  data.about = values.aboutyou
+  console.log(data)
+    api.patchRequestPrifile(data)
+      .then((res) => {
+        userInfo.setUserInfo(res)
+      })
+  }
+)
+
+const popupChangeAvatar = new PopupWithForm('popup-avatar', 'popup_opened', (values) => {
+  api.changeAvatar(values)
+    .then(res => {
+      userInfo.setUserInfo(res)
+    })
+})
 
 
 //удаление карточки с апи
@@ -115,11 +138,13 @@ function addNewCard (card, id) {
 }
 
 cardValidation.enableValidation()
+profileValidation.enableValidation()
+avatarValidation.enableValidation()
 
 imagePopup.setEventListeners()
 popupCard.setEventListeners()
-
-
+popupInfo.setEventListeners()
+popupChangeAvatar.setEventListeners()
 
 
 Promise.all([api.getInitialCards(), api.getResponsInfo()])
