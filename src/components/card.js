@@ -1,89 +1,89 @@
-// import {openPopup} from './modal.js'
-// import {
-//     popupTitle,
-//     popupImage,
-//     imagePopup,
-//     templateSelector,
-//     id
-// } from './consts.js'
-// import { deleteRequestCardId, deleteRequestCardsLikesID, deleteRequestCard } from './api.js'
+import { buttonClosePopupImage } from './consts.js'
 
-// function renderCard(card, container) {
-//   container.prepend(card)
-// }
+//создаем класс карточки
+export default class Card {
+  constructor(card, user, templateSelector, {removeCard, handleCardClick, deleteHandle, putHandle}) {
+    this._card = card
+    this._user = user
+    this._templateSelector = templateSelector
+    this._openImage = handleCardClick
+    this._deleteCardHandle = removeCard
+    this._deleteLikeHandle = deleteHandle
+    this._putLikeHandle = putHandle
+    this._likes = card.likes.length;
+  }
 
-// const myLikes = (likes, button) => {
-//   likes.forEach(element => {
-//     if (element._id === id.id) {
-//       button.classList.add('card__heart_active')
-//     }
-//   })
-// }
+  //получаем темплейт для создания карточки
+  _getElement() {
+    const cardTemplate = document.querySelector(this._templateSelector).content.querySelector('.card').cloneNode(true)
+    return cardTemplate
+  }
 
-// const setLikes = (likes, number) => {
-//   if (likes.length > 0) {
-//     number.textContent = likes.length
-//   }
-//   else number.textContent = '0'
-// }
+//установщик лайка и смена счетчика
+  _setLikes = () => {
+    if (this._isLike) {
+      this._deleteLikeHandle(this._card._id, this._heartCard, this._countLikes)
+      this._isLike = false;
+    }
 
-// const deleteTrash = (owner, trash) => {
-//   if (id.id !== owner) trash.remove()
-// }
+    else{
+      this._putLikeHandle(this._card._id, this._heartCard, this._countLikes)
+      this._isLike = true;
+    }
+  }
 
-// function createCard(item) {
-//     const cardTemplate = document.querySelector(templateSelector).content
+//проверка на наш лайк
+  _isMyLike() {
+    if(this._card.likes.length) {
+      this._card.likes.forEach(item => {
+        if(item._id == this._user){
+          this._heartCard.classList.add('card__heart_active')
+          this._isLike = true
+        }
+      })
+    }
+  }
 
-//     const cardAdd = cardTemplate.querySelector('.card').cloneNode(true)
-//     const countLikes = cardAdd.querySelector('.card__count-heart')
+  _setEventListeners() {
 
-//     cardAdd.querySelector('.card__heading').textContent = item.name
-//     const cardInfo = cardAdd.querySelector('.card__image')
-//     cardInfo.src = item.link
-//     cardInfo.alt = item.name
+    //обработчик удаления карточки
+    this._trash.addEventListener('click', () => this._deleteCardHandle(this._element, this._card._id))
 
-//     const heartCard = cardAdd.querySelector('.card__heart')
-//     heartCard.addEventListener('click', (evt) => {
-//       if (heartCard.classList.contains('card__heart_active')) {
-//         deleteRequestCardId(item._id)
-//           .then((item) => {
-//             myLikes(item.likes, evt.target)
-//             setLikes(item.likes, countLikes)
-//             evt.target.classList.remove('card__heart_active')
-//           })
-//           .catch(err => console.log(`Ошибка - ${err}`))
-//       } else {
-//         deleteRequestCardsLikesID(item._id)
-//           .then((item) => {
-//           myLikes(item.likes, evt.target)
-//           setLikes(item.likes, countLikes)
-//           heartCard.classList.add('card__heart_active')
-//         })
-//           .catch(err => console.log(`Ошибка - ${err}`))
-//       }
-//     })
+    this._imageBig.addEventListener("click", () => {
+      this._openImage({
+        imageSrc: this._card.link,
+        text: this._card.name,
+      });
+    })
+    //установка или удаление лайка
+    this._heartCard.addEventListener('click',() => this._setLikes())
+  }
 
-//     const trashCard = cardAdd.querySelector('.card__trash')
-//     trashCard.addEventListener('click', () => {
-//     deleteRequestCard(item._id)
-//       .then(() => cardAdd.remove())
-//       .catch(err => console.log(`Ошибка - ${err}`))
-//     })
+//создаем элемент карточки из темплейта
+  generate() {
+    this._element = this._getElement()
+    this._heartCard = this._element.querySelector('.card__heart')
+    this._countLikes = this._element.querySelector('.card__count-heart')
+    this._trash = this._element.querySelector('.card__trash')
+    this._imageBig = this._element.querySelector('.card__image')
+    this._element.querySelector('.card__heading').textContent = this._card.name
+    this._element.querySelector('.card__image').src = this._card.link
+    this._element.querySelector('.card__image').alt = this.name
+    this._isLike = this._card.likes.filter((item) => {
+      return item._id == this._user._id
+    }).length > 0;
+    //удаление мусорки у чужих карточек
+    if(this._card.owner._id !== this._user) {
+      this._trash.remove()
+    }
+    this._imageBig.src = this._card.link;
+    this._imageBig.alt = this._card.name;
+    this._countLikes.textContent = this._likes
 
-//     const imageCard = cardInfo
-//       imageCard.addEventListener('click', () => {
-//         popupTitle.textContent = cardAdd.querySelector('.card__heading').textContent
-//         imagePopup.src = cardInfo.src
-//         imagePopup.alt = popupTitle.textContent
-//         openPopup(popupImage)
-//       }
-//     )
-//     myLikes(item.likes, heartCard)
-//     setLikes(item.likes, countLikes)
-//     deleteTrash(item.owner._id, trashCard)
+    this._isMyLike()
 
-//     return cardAdd
-// }
+    this._setEventListeners()
 
-
-// export { createCard, renderCard }
+    return this._element
+  }
+}

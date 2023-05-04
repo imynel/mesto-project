@@ -1,108 +1,95 @@
+export default class Api {
+  constructor(options) {
+    this.baseUrl = options.baseUrl
+    this.headers = options.headers
+  }
 
+// ЗАПРОС ДЛЯ ИНФОРМАЦИИ О КАРТОЧКАХ
+  getInitialCards() {
+    return fetch(`${this.baseUrl}/cards`, {
+      headers: this.headers
+    })
+            .then(this._getResponsData)
+  }
 
-const config = {
-  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-22',
-  headers: {
-    authorization: '19feaa3d-4124-4771-a3db-87bef0dcd15a',
-    'Content-Type': 'application/json'
+  // ЗАПРОС ДЛЯ ИНФОРМАЦИИ О ЮЗЕРЕ
+  getResponsInfo() {
+    return fetch(`${this.baseUrl}/users/me`, {
+      headers: this.headers
+    })
+            .then(this._getResponsData)
+  }
+
+  // ЗАПРОС ДЛЯ ОБНОВЛЕНИЯ ИНФОРМАЦИИ ПРОФИЛЯ
+  patchRequestPrifile(user) {
+    return fetch(`${this.baseUrl}/users/me`, {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify({
+        name: user.name,
+        about: user.about
+      })
+    })
+            .then(this._getResponsData)
+  }
+
+  //ЗАПРОС НА ДОБАВЛЕНИЕ КАРТОЧЕК
+  gitInitialCards({name, link}) {
+    return fetch(`${this.baseUrl}/cards`, {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify({
+        name: name,
+        link: link,
+      })
+  })
+            .then(this._getResponsData)
+  }
+
+  //ЗАПРОС НА УДАЛЕНИЕ ЛАЙКА
+  deleteRequestCardId(id) {
+    return fetch(`${this.baseUrl}/cards/likes/${id}`, {
+      method: 'DELETE',
+      headers: this.headers
+  })
+            .then(this._getResponsData)
+  }
+
+  // ЗАПРОС НА ДОБАВЛЕНИЯ ЛАЙКА
+  putRequestCardsLikesID(id) {
+    return fetch(`${this.baseUrl}/cards/likes/${id}`, {
+      method: 'PUT',
+      headers: this.headers
+    })
+            .then(this._getResponsData)
+  }
+
+  // ЗАПРОС НА УДАЛЕНИЕ КАРТОЧКИ
+  deleteRequestCard(id) {
+    return fetch(`${this.baseUrl}/cards/${id}`, {
+      method: 'DELETE',
+      headers: this.headers
+    })
+            .then(this._getResponsData)
+  }
+
+  changeAvatar(avatar) {
+    return fetch(`${this.baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify({
+        avatar: avatar.avatarlink
+      })
+    })
+            .then(this._getResponsData)
+  }
+
+  _getResponsData = res => {
+    if(res.ok) return res.json()
+    return Promise.reject(err => console.log(`Ошибка - ${err}`))
   }
 }
 
-const getResponsData = (res) => {
-  if (res.ok) return res.json()
-  return Promise.reject(`Ошибка: ${res.status}`);
-}
 
-// ЗАПРОС ДЛЯ ИНФОРМАЦИИ О ЮЗЕРЕ
-const getRequestUsersMe = () => {
-  return fetch(`${config.baseUrl}/users/me`, {
-    headers: config.headers
-  })
-  .then(res => getResponsData(res))
-}
-
-// ЗАПРОС ДЛЯ ИНФОРМАЦИИ О КАРТОЧКАХ
-const getRequestCards = () => {
-  return fetch(`${config.baseUrl}/cards`, {
-    headers: config.headers
-  })
-  .then(res => getResponsData(res))
-}
-
-// ЗАПРОС ДЛЯ ОБНОВЛЕНИЯ ИНФОРМАЦИИ ПРОФИЛЯ
-const patchRequestPrifile = (nameProfile, aboutProfile) => {
-  return fetch(`${config.baseUrl}/users/me`, {
-    method: 'PATCH',
-    headers: config.headers,
-    body: JSON.stringify({
-      name: nameProfile,
-      about: aboutProfile
-    })
-  })
-  .then(res => getResponsData(res))
-}
-
-export const gitInitialCards = (place, link) => {
-  return fetch(`${config.baseUrl}/cards`, {
-    headers: config.headers,
-    method: 'POST',
-    body: JSON.stringify({
-      name: place,
-      link: link,
-    })
-  })
-  .then(res => getResponsData(res))
-}
-// ЗАПРОС НА УДАЛЕНИЕ ЛАЙКА
-const deleteRequestCardId = (id) => {
-  return fetch(`${config.baseUrl}/cards/likes/${id}`, {
-    method: 'DELETE',
-    headers: config.headers
-  })
-  .then(res => getResponsData(res))
-}
-
-// ЗАПРОС НА ДОБАВЛЕНИЯ ЛАЙКА
-const deleteRequestCardsLikesID = (id) => {
-  return fetch(`${config.baseUrl}/cards/likes/${id}`, {
-    method: 'PUT',
-    headers: config.headers
-  })
-  .then(res => getResponsData(res))
-}
-
-// ЗАПРОС НА УДАЛЕНИЕ КАРТОЧКИ
-const deleteRequestCard = (id) => {
-  return fetch(`${config.baseUrl}/cards/${id}`, {
-    method: 'DELETE',
-    headers: config.headers
-  })
-  .then(res => getResponsData(res))
-}
-
-
-function changeAvatar(link) {
-  return fetch(`${config.baseUrl}/users/me/avatar`, {
-    method: 'PATCH',
-    headers: config.headers,
-    body: JSON.stringify({
-      avatar: link
-    })
-  })
-    .then(res => getResponsData(res))
-}
-
-
-
-
-export {
-  changeAvatar,
-  patchRequestPrifile,
-  deleteRequestCardId,
-  deleteRequestCardsLikesID,
-  deleteRequestCard,
-  getRequestCards,
-  getRequestUsersMe,
-}
 
 
