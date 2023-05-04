@@ -1,42 +1,34 @@
 import '../pages/index.css';
-import { getRequestCards, getRequestUsersMe } from './api.js'
-import { createCard, renderCard } from './card.js'
-import {openPopup, closePopup} from './modal.js'
-import {enableValidation} from './valid.js'
-import {handleFormSubmitProfile, handleFormSubmitCards, handleFormSubmitAvatar} from './utils.js'
 import {
   buttonOpenPopupCard,
   buttonOpenPopupProfile,
   buttonClosePopupCards,
   buttonClosePopupProfile,
   buttonClosePopupImage,
-  formElementCards,
-  formElementProfile,
-  popupImage,
-  popupCards,
-  popupProfile,
   nameInput,
   nameProfile,
   jobInput,
   jobProfile,
   placeInput,
   linkInput,
-  popupAvatar,
   buttonClosePopupAvatar,
   buttonAvatar,
-  formElementAvatar,
   sectionCards,
   avatarImage,
-  id,
   templateSelector,
+  settings,
 } from './consts.js'
-import Api from './classApi.js';
+
+// **************** ИМПОРТ ВСЕХ КЛАССОВ ****************
+import Api from './Api.js';
 import UserInfo from './UserInfo.js';
 import FormValidator from './FormValidator.js';
 import Section from './Section.js';
-import Card from "./ClassCard.js"
+import Card from "./Card.js";
+import PopupWithForm from './PopupWithForm.js'
+import PopupWithImage from './PopupWithImage.js'
 
-//создаем экземпляр апи, потом вызываем его с нужными методами
+// создаем экземпляр апи, потом вызываем его с нужными методами
 const api = new Api ({
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-22',
   headers: {
@@ -45,46 +37,11 @@ const api = new Api ({
   }
 })
 
-//удаление карточки с апи
-function deleteCard(card, cardId) {
-  api.deleteRequestCard(cardId)
-    .then(() => {
-      card.remove()
-    })
-    .catch(err => console.log(`Ошибка - ${err.status}`))
-}
-
-//удаление лайка с апи
-function deleteLike(id,button, likeCounter) {
-  api.deleteRequestCardId(id)
-    .then((res) => {
-      button.classList.remove('card__heart_active')
-      likeCounter.textContent = res.likes.length
-    })
-}
-
-//установка лайка с апи
-function putLike(id,button, likeCounter) {
-  api.putRequestCardsLikesID(id)
-    .then((res) => {
-      button.classList.add('card__heart_active')
-      likeCounter.textContent = res.likes.length
-    })
-}
-
-function addNewCard (card, id) {
-  const newCard = new Card(card, userInfo._userId, templateSelector, {
-    // handleCardClick: handleOpenImage,
-    removeCard: deleteCard,
-    deleteHandle: deleteLike,
-    putHandle: putLike,
-  })
-  const cardElement = newCard.generate();
-  return cardElement
-}
-
-
-
+// СОЗДАЁМ ЭКЗЕМПЛЯРЫ КЛАССОВ
+const cardValidation = new FormValidator(settings, document.querySelector('#form-cards'))
+const profileValidation = new FormValidator(settings, document.querySelector('#form-profile'))
+const avatarValidation = new FormValidator(settings, document.querySelector('#form-avatar'))
+const imagePopup = new PopupWithImage("popup-image", "popup_opened");
 const userInfo = new UserInfo(nameProfile,jobProfile, avatarImage);
 const section = new Section({
   renderer: (card) => {
@@ -93,72 +50,145 @@ const section = new Section({
   }
 }, sectionCards)
 
+const popupCard = new PopupWithForm('popup-cards', 'popup_opened', (values) =>
+  {
+  const data = {};
+  data.name = values.titleinput
+  data.link = values.linkinput
+    api.gitInitialCards(data)
+      .then(res => {
+        popupCard.setBtnStatus(true)
+        section.addItem(addNewCard(res, userInfo._userId))
+        popupCard.close()
+      })
+      .catch(err => console.log(`Ошибка - ${err.status}`))
+      .finally(() => popupCard.setBtnStatus(false))
+  }
+)
+
+const popupInfo = new PopupWithForm('popup-profile', 'popup_opened', (values) =>
+  {
+  const data = {};
+  data.name = values.yourname
+  data.about = values.aboutyou
+    api.patchRequestPrifile(data)
+      .then((res) => {
+        popupInfo.setBtnStatus(true)
+        userInfo.setUserInfo(res)
+        popupInfo.close()
+      })
+      .catch(err => console.log(`Ошибка - ${err.status}`))
+      .finally(() => popupInfo.setBtnStatus(false))
+  }
+)
+
+const popupChangeAvatar = new PopupWithForm('popup-avatar', 'popup_opened', (values) => {
+
+  api.changeAvatar(values)
+    .then(res => {
+      popupChangeAvatar.setBtnStatus(true)
+      userInfo.setUserInfo(res)
+      popupChangeAvatar.close()
+    })
+
+    .catch(err => console.log(`Ошибка - ${err.status}`))
+    .finally(() => popupChangeAvatar.setBtnStatus(false))
+})
+
 Promise.all([api.getInitialCards(), api.getResponsInfo()])
   .then(([cards, user]) => {
     userInfo.setUserInfo(user)
     section.rendererElement(cards, user._id)
   })
+  .catch(err => console.log(`Ошибка - ${err.status}`))
 
+// ФУНКЦИИ ДЛЯ addNewCard
+//удаление карточки с апи
+function deleteCard(card, cardId) {
+  api.deleteRequestCard(cardId)
+  .then(() => {
+    card.remove()
+  })
+  .catch(err => console.log(`Ошибка - ${err.status}`))
+}
 
+//удаление лайка с апи
+function deleteLike(id,button, likeCounter) {
+  api.deleteRequestCardId(id)
+  .then((res) => {
+    button.classList.remove('card__heart_active')
+    likeCounter.textContent = res.likes.length
+  })
+  .catch(err => console.log(`Ошибка - ${err.status}`))
+}
 
-// Promise.all([getRequestUsersMe(), getRequestCards()])
-//   .then(([info, cards]) => {
-//     nameProfile.textContent = info.name
-//     jobProfile.textContent = info.about
-//     avatarImage.src = info.avatar
-//     id.id = info._id
-//     cards.forEach(element => {
-//       const cardElemnt = createCard(element)
-//       renderCard(cardElemnt, sectionCards)
-//     })
-//   })
-//   .catch(err => console.log(err))
+//установка лайка с апи
+function putLike(id,button, likeCounter) {
+  api.putRequestCardsLikesID(id)
+  .then((res) => {
+    button.classList.add('card__heart_active')
+    likeCounter.textContent = res.likes.length
+  })
+  .catch(err => console.log(`Ошибка - ${err.status}`))
+}
 
+// СОЗДАНИЕ КАРТОЧКИ СО СЛУШАТЕЛЯМИ
+function addNewCard (card) {
+  const newCard = new Card(card, userInfo._userId, templateSelector, {
+    handleCardClick: (link, name) => {
+      imagePopup.open(link, name)
+    },
+    removeCard: deleteCard,
+    deleteHandle: deleteLike,
+    putHandle: putLike,
+  })
+  const cardElement = newCard.generate();
+  return cardElement
+}
 
-enableValidation({
-  formSelector: '.form',
-  inputSelector: '.form-input',
-  submitButtonSelector: '.form__submit',
-  inactiveButtonClass: 'form__submit_inactive',
-  inputErrorClass: 'form__input_type-error',
-  errorClass: 'form__input-error_active',
-});
+// ЗАПУСК ВАЛИДАЦИИ
+cardValidation.enableValidation()
+profileValidation.enableValidation()
+avatarValidation.enableValidation()
+
+// ЗАПУСК СЛУШАТЕЛЕЙ
+imagePopup.setEventListeners()
+popupCard.setEventListeners()
+popupInfo.setEventListeners()
+popupChangeAvatar.setEventListeners()
+
 
 // слушатели
 buttonOpenPopupProfile.addEventListener('click', () => {
-
   nameInput.value = nameProfile.textContent
   jobInput.value = jobProfile.textContent
-
-  openPopup(popupProfile)
+  popupInfo.open()
 })
 
 buttonOpenPopupCard.addEventListener('click', () => {
   placeInput.value = ''
   linkInput.value = ''
-  openPopup(popupCards)
+  popupCard.open()
 })
 
 buttonAvatar.addEventListener('click', () => {
-  openPopup(popupAvatar)
+  popupChangeAvatar.open()
 })
 
 buttonClosePopupProfile.addEventListener('click', () => {
-  closePopup(popupProfile)
+  popupInfo.close()
 })
 
 buttonClosePopupCards.addEventListener('click', () => {
-  closePopup(popupCards)
+  popupCard.close()
 })
 
 buttonClosePopupImage.addEventListener('click', () => {
-  closePopup(popupImage)
+  imagePopup.close()
 })
 
 buttonClosePopupAvatar.addEventListener('click', () => {
-  closePopup(popupAvatar)
+  popupChangeAvatar.close()
 })
 
-formElementCards.addEventListener('submit', handleFormSubmitCards)
-formElementProfile.addEventListener('submit', handleFormSubmitProfile)
-formElementAvatar.addEventListener('submit', handleFormSubmitAvatar)
+
