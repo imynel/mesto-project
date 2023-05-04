@@ -90,6 +90,7 @@ const popupInfo = new PopupWithForm('popup-profile', 'popup_opened', (values) =>
 )
 
 const popupChangeAvatar = new PopupWithForm('popup-avatar', 'popup_opened', (values) => {
+
   api.changeAvatar(values)
     .then(res => {
       userInfo.setUserInfo(res)

@@ -81,7 +81,7 @@ export default class Api {
         avatar: avatar.avatarlink
       })
     })
-            .then(this._getResponsData(res))
+            .then(this._getResponsData)
   }
 
   _getResponsData = res => {
