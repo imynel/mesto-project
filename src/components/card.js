@@ -1,4 +1,3 @@
-import { buttonClosePopupImage } from './consts.js'
 
 //создаем класс карточки
 export default class Card {

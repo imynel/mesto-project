@@ -1,4 +1,4 @@
-import '../pages/index.css';
+import './index.css';
 import {
   buttonOpenPopupCard,
   buttonOpenPopupProfile,
@@ -17,16 +17,16 @@ import {
   avatarImage,
   templateSelector,
   settings,
-} from './consts.js'
+} from '../utils/consts.js'
 
 // **************** ИМПОРТ ВСЕХ КЛАССОВ ****************
-import Api from './Api.js';
-import UserInfo from './UserInfo.js';
-import FormValidator from './FormValidator.js';
-import Section from './Section.js';
-import Card from "./Card.js";
-import PopupWithForm from './PopupWithForm.js'
-import PopupWithImage from './PopupWithImage.js'
+import Api from '../components/Api.js';
+import UserInfo from '../components/UserInfo.js';
+import FormValidator from '../components/FormValidator.js';
+import Section from '../components/Section.js';
+import Card from "../components/Card.js";
+import PopupWithForm from '../components/PopupWithForm.js'
+import PopupWithImage from '../components/PopupWithImage.js'
 
 // создаем экземпляр апи, потом вызываем его с нужными методами
 const api = new Api ({
@@ -175,20 +175,5 @@ buttonAvatar.addEventListener('click', () => {
   popupChangeAvatar.open()
 })
 
-buttonClosePopupProfile.addEventListener('click', () => {
-  popupInfo.close()
-})
-
-buttonClosePopupCards.addEventListener('click', () => {
-  popupCard.close()
-})
-
-buttonClosePopupImage.addEventListener('click', () => {
-  imagePopup.close()
-})
-
-buttonClosePopupAvatar.addEventListener('click', () => {
-  popupChangeAvatar.close()
-})
 
 
