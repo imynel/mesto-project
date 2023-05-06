@@ -7,9 +7,12 @@ export default class Card {
     this._templateSelector = templateSelector
     this._openImage = handleCardClick
     this._deleteCardHandle = removeCard
-    this._deleteLikeHandle = deleteHandle
     this._putLikeHandle = putHandle
     this._likes = card.likes.length;
+    this._deleteLikeFunction = deleteHandle
+    this._putLikeFunction = putHandle
+    this._handleButtonClick = this._handleButtonClick.bind(this)
+    this.handleLike = this.handleLike.bind(this)
   }
 
   //получаем темплейт для создания карточки
@@ -55,10 +58,10 @@ export default class Card {
       });
     })
     //установка или удаление лайка
-    this._heartCard.addEventListener('click',() => this._setLikes())
+    this._heartCard.addEventListener('click',(e) => this._handleButtonClick(e))
   }
 
-//создаем элемент карточки из темплейта
+  //создаем элемент карточки из темплейта
   generate() {
     this._element = this._getElement()
     this._heartCard = this._element.querySelector('.card__heart')
@@ -84,5 +87,17 @@ export default class Card {
     this._setEventListeners()
 
     return this._element
+  }
+
+  handleLike(e, res) {
+    this._element.querySelector('.card__count-heart').textContent = res.likes.length
+    e.target.classList.toggle('card__heart_active')
+  }
+  _handleButtonClick(e) {
+    if (e.target.classList.contains('card__heart_active')) {
+      this._deleteLikeFunction(e, this._card._id)
+    } else {
+      this._putLikeFunction(e, this._card._id)
+    }
   }
 }

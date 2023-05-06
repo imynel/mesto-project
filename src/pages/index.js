@@ -95,12 +95,6 @@ const popupChangeAvatar = new PopupWithForm('popup-avatar', 'popup_opened', (val
     .finally(() => popupChangeAvatar.setBtnStatus(false))
 })
 
-Promise.all([api.getInitialCards(), api.getResponsInfo()])
-  .then(([cards, user]) => {
-    userInfo.setUserInfo(user)
-    section.rendererElement(cards, user._id)
-  })
-  .catch(err => console.log(`Ошибка - ${err.status}`))
 
 // ФУНКЦИИ ДЛЯ addNewCard
 //удаление карточки с апи
@@ -112,68 +106,65 @@ function deleteCard(card, cardId) {
   .catch(err => console.log(`Ошибка - ${err.status}`))
 }
 
-//удаление лайка с апи
-function deleteLike(id,button, likeCounter) {
-  api.deleteRequestCardId(id)
-  .then((res) => {
-    button.classList.remove('card__heart_active')
-    likeCounter.textContent = res.likes.length
-  })
-  .catch(err => console.log(`Ошибка - ${err.status}`))
-}
-
-//установка лайка с апи
-function putLike(id,button, likeCounter) {
-  api.putRequestCardsLikesID(id)
-  .then((res) => {
-    button.classList.add('card__heart_active')
-    likeCounter.textContent = res.likes.length
-  })
-  .catch(err => console.log(`Ошибка - ${err.status}`))
-}
-
-// СОЗДАНИЕ КАРТОЧКИ СО СЛУШАТЕЛЯМИ
-function addNewCard (card) {
-  const newCard = new Card(card, userInfo._userId, templateSelector, {
-    handleCardClick: (link, name) => {
-      imagePopup.open(link, name)
+  // СОЗДАНИЕ КАРТОЧКИ СО СЛУШАТЕЛЯМИ
+  function addNewCard (card) {
+    const newCard = new Card(card, userInfo._userId, templateSelector, {
+      handleCardClick: (link, name) => {
+        imagePopup.open(link, name)
+      },
+      removeCard: deleteCard,
+      deleteHandle: function(e, id) {
+        api.deleteRequestCardId(id)
+        .then((res) => {
+        newCard.handleLike(e, res)
+    })
     },
-    removeCard: deleteCard,
-    deleteHandle: deleteLike,
-    putHandle: putLike,
+      putHandle: function(e, id) {
+        api.putRequestCardsLikesID(id)
+          .then((res) => {
+          newCard.handleLike(e, res)
+        })
+    }
   })
   const cardElement = newCard.generate();
   return cardElement
 }
 
-// ЗАПУСК ВАЛИДАЦИИ
-cardValidation.enableValidation()
-profileValidation.enableValidation()
-avatarValidation.enableValidation()
-
-// ЗАПУСК СЛУШАТЕЛЕЙ
-imagePopup.setEventListeners()
-popupCard.setEventListeners()
-popupInfo.setEventListeners()
-popupChangeAvatar.setEventListeners()
+  Promise.all([api.getInitialCards(), api.getResponsInfo()])
+    .then(([cards, user]) => {
+      userInfo.setUserInfo(user)
+      section.rendererElement(cards, user._id)
+    })
+    .catch(err => console.log(err))
 
 
-// слушатели
-buttonOpenPopupProfile.addEventListener('click', () => {
-  nameInput.value = nameProfile.textContent
-  jobInput.value = jobProfile.textContent
-  popupInfo.open()
-})
+    // ЗАПУСК ВАЛИДАЦИИ
+    cardValidation.enableValidation()
+    profileValidation.enableValidation()
+    avatarValidation.enableValidation()
 
-buttonOpenPopupCard.addEventListener('click', () => {
-  placeInput.value = ''
-  linkInput.value = ''
-  popupCard.open()
-})
+    // ЗАПУСК СЛУШАТЕЛЕЙ
+    imagePopup.setEventListeners()
+    popupCard.setEventListeners()
+    popupInfo.setEventListeners()
+    popupChangeAvatar.setEventListeners()
 
-buttonAvatar.addEventListener('click', () => {
-  popupChangeAvatar.open()
-})
+
+    // слушатели
+    buttonOpenPopupProfile.addEventListener('click', () => {
+      const userData = userInfo.getUserInfo();
+      nameInput.value = userData.name
+      jobInput.value = userData.about
+      popupInfo.open()
+    })
+
+    buttonOpenPopupCard.addEventListener('click', () => {
+      popupCard.open()
+    })
+
+    buttonAvatar.addEventListener('click', () => {
+      popupChangeAvatar.open()
+    })
 
 
 

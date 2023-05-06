@@ -6,11 +6,11 @@ export default class UserInfo {
     this._avatar = avatar
   }
 
-  getUserInfo(data) {
+  getUserInfo() {
     return {
-      name: data.name,
-      about: data.about,
-      avatar: data.avatar,
+      name: this._name.textContent,
+      about: this._about.textContent,
+      avatar: this._avatar.src
     }
   }
 
