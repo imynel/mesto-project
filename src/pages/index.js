@@ -117,15 +117,15 @@ function deleteCard(card, cardId) {
         api.deleteRequestCardId(id)
         .then((res) => {
         newCard.handleLike(e, res)
+      })
         .catch(err => console.log(err))
-    })
     },
       putHandle: function(e, id) {
         api.putRequestCardsLikesID(id)
           .then((res) => {
           newCard.handleLike(e, res)
-          .catch(err => console.log(err))
         })
+          .catch(err => console.log(err))
     }
   })
   const cardElement = newCard.generate();

@@ -90,7 +90,7 @@ export default class Card {
   }
 
   handleLike(e, res) {
-    this._element.querySelector('.card__count-heart').textContent = res.likes.length
+    this._countLikes.textContent = res.likes.length
     e.target.classList.toggle('card__heart_active')
   }
   _handleButtonClick(e) {
