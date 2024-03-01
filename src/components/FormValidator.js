@@ -13,6 +13,8 @@ export default class FormValidator {
     formError.classList.add(this._config.errorClass);
   };
 
+  //какие то изменения
+
   _hideInputError(formInput) {
   const formError = this._form.querySelector(`.${formInput.id}-error`);
   formInput.classList.remove(this._config.inputErrorClass);
