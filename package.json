@@ -1,6 +1,6 @@
 {
   "name": "mesto-project",
-  "homepage": "./",
+  "homepage": "https://imynel.github.io/mesto-project",
   "version": "1.0.0",
   "description": "1. HTML\r 2. CSS\r 3. БЭМ\r 4. javascript\r **Сылка на GitHub Pages**\r [Тут ссылка](https://imynel.github.io/mesto-project/)",
   "main": "index.js",
